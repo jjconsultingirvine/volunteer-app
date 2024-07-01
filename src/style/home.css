@@ -1,0 +1,47 @@
+.org_listing {
+    display: flex;
+    flex-direction: column;
+    width: 20rem;  
+    min-width: 20rem; 
+    background: #f8f8f8;
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: 1px 1px 7px 0px rgba(0,0,0,0.2);
+}
+.org_pfp {
+    width: 5rem;
+    height: 5rem;
+    object-fit: cover;
+    border-radius: 35%;   
+    box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.3);
+}
+.org_name {
+    font-size: 1.7rem;
+    font-weight: bold;
+}
+.org_listing > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+.orgs_list {
+    width: 100vw;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    padding: 1rem;
+    justify-content: center;
+    gap: 1rem;
+}
+@media screen {
+    
+}
+.home_header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 2rem;
+    font-size: 1.3rem;
+}
