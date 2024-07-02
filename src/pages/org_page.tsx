@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import supabase from "../supabase";
 import "../style/org_page.css"
+import { useSession } from "@clerk/clerk-react";
 
 const OrgPage: React.FC<{}> = () => {
+    const clerk_session = useSession().session;
+    console.log(clerk_session);
     const navigate = useNavigate();
     const org_id = useParams().org_id;
     const [org, setOrg] = useState(null) as any;
     async function get_org() {
-        const {data} = await supabase.from("organizations").select().eq('pretty_name',org_id);
+        const {data} = await supabase(clerk_session).from("organizations").select().eq('pretty_name',org_id);
         setOrg(data![0]);
         console.log(data![0]);
     }

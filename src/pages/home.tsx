@@ -1,14 +1,14 @@
 import "../style/home.css"
 import React, { useEffect, useState } from "react"
 import supabase from "../supabase";
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
+import { SignInButton, SignedIn, SignedOut, UserButton, useSession } from "@clerk/clerk-react";
 
 
 const Home: React.FC<{}> = () => {
-
+    const clerk_session = useSession().session;
     const [orgs, setOrgs] = useState([] as any[]);
     useEffect(()=>{
-        supabase.from("organizations").select().then(data=>{
+        supabase(clerk_session).from("organizations").select().then(data=>{
             console.log(data);
             setOrgs(data.data!)
     });
