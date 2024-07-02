@@ -10,6 +10,7 @@ import "./index.css";
 import Home from "./pages/home";
 import OrgPage from "./pages/org_page";
 import clerk_key from "./clerk";
+import Profile from "./pages/profile";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: "/org/:org_id",
     element: <OrgPage></OrgPage>
+  },
+  {
+    path: "/profile/:profile_id",
+    element: <Profile></Profile>
   }
 ]);
 

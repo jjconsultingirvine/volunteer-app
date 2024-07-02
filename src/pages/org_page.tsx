@@ -11,13 +11,14 @@ const OrgPage: React.FC<{}> = () => {
     const org_id = useParams().org_id;
     const [org, setOrg] = useState(null) as any;
     async function get_org() {
-        const {data} = await supabase(clerk_session).from("organizations").select().eq('pretty_name',org_id);
+        const {data} = await supabase(clerk_session).then(sup=>sup.from("organizations").select().eq('pretty_name',org_id));
+        console.log(data);
         setOrg(data![0]);
         console.log(data![0]);
     }
     useEffect(()=>{
         get_org()
-    },[]);
+    },[clerk_session]);
     return org && <div className="org_page_outer">
         <div className="org_page">
             <div className="page_header">
