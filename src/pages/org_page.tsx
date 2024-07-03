@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import supabase from "../supabase";
 import "../style/org_page.css"
 import { useSession } from "@clerk/clerk-react";
+import TopNavBar from "../components/top_nav_bar";
 
 const OrgPage: React.FC<{}> = () => {
     const clerk_session = useSession().session;
     console.log(clerk_session);
-    const navigate = useNavigate();
     const org_id = useParams().org_id;
     const [org, setOrg] = useState(null) as any;
     async function get_org() {
@@ -21,11 +21,7 @@ const OrgPage: React.FC<{}> = () => {
     },[clerk_session]);
     return org && <div className="org_page_outer">
         <div className="org_page">
-            <div className="page_header">
-                <button className="back_button" onClick={() => navigate(-1)}><svg height="24px" id="Layer_1" version="1.1" viewBox="0 0 512 512" width="24px" xmlns="http://www.w3.org/2000/svg"><polygon points="352,128.4 319.7,96 160,256 160,256 160,256 319.7,416 352,383.6 224.7,256 "/></svg></button>
-                <div>{org.name}</div>
-            </div>
-            
+            <TopNavBar title={org.name}></TopNavBar>
             <div className="horizontal">
             {org.pfp && <img src={org.pfp} className="org_pfp"/>}
             <div className="org_page_short_desc">{org.short_desc}</div>
