@@ -6,7 +6,6 @@ import { SignInButton, SignedIn, SignedOut, UserButton, useSession } from "@cler
 
 const Home: React.FC<{}> = () => {
     const clerk_session = useSession().session;
-    console.log(clerk_session);
     const [orgs, setOrgs] = useState([] as any[]);
     useEffect(() => {
         supabase(clerk_session).then(sup=>sup.from("organizations").select().then(data=>{

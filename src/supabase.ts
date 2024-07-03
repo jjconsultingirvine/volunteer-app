@@ -16,7 +16,6 @@ const supabase = async (session: any) => {
           // Construct fetch headers
           const headers = new Headers(options?.headers);
           headers.set("Authorization", `Bearer ${clerkToken}`);
-          headers.forEach(console.log);
           // Now call the default fetch
           return fetch(url, {
             ...options,
@@ -26,7 +25,6 @@ const supabase = async (session: any) => {
       },
     }
   );
-  console.log(client);
   return client;
 };
 export default supabase;

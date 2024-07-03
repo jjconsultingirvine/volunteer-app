@@ -11,6 +11,7 @@ import Home from "./pages/home";
 import OrgPage from "./pages/org_page";
 import clerk_key from "./clerk";
 import Profile from "./pages/profile";
+import Onboard from "./pages/onboard";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
   {
     path: "/profile/:profile_id",
     element: <Profile></Profile>
+  },
+  {
+    path: "/onboard",
+    element: <Onboard></Onboard>
   }
 ]);
 
