@@ -20,7 +20,7 @@ const OrgPage: React.FC<{}> = () => {
         get_org()
     },[clerk_session]);
     return org && <div className="org_page_outer">
-        <div className="org_page">
+        <div className="page">
             <TopNavBar title={org.name}></TopNavBar>
             <div className="horizontal">
             {org.pfp && <img src={org.pfp} className="org_pfp"/>}

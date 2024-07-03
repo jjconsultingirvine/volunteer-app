@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import supabase from "../supabase";
 import { Link } from "react-router-dom";
 import { User, interests, skill_sets } from "../schema";
+import TopNavBar from "../components/top_nav_bar";
+import "../style/onboard.css";
 
 const Onboard: React.FC<{}> = () => {
   const clerk_session = useSession().session;
@@ -69,84 +71,101 @@ const Onboard: React.FC<{}> = () => {
       console.log("updating to");
       console.log(profile);
       let sup = await supabase(clerk_session);
-      await sup.from("profiles").update(profile).eq("user_id", clerk_session.user.id);
+      await sup
+        .from("profiles")
+        .update(profile)
+        .eq("user_id", clerk_session.user.id);
     }
   };
   return (
-    <>
-      <h2>Welcome</h2>
-      <p>Please enter your name</p>
-      <input
-        type="text"
-        id="name_entry"
-        value={my_name}
-        onChange={(e) => {
-          setMyName(e.target.value);
-          setIsUpdate(true);
-        }}
-      ></input>
-      <p>Write a short bio about yourself</p>
-      <input
-        type="text"
-        id="bio_entry"
-        value={my_bio}
-        onChange={(e) => {
-          setMyBio(e.target.value);
-          setIsUpdate(true);
-        }}
-      ></input>
-      <p>Select areas of interest</p>
-      {interests.map((interest) => {
-        return (
-          <div key={interest.replace(/ /g, "")}>
-            <input
-              type="checkbox"
-              id={interest}
-              onChange={(e) => {
-                let is_in = (e.target as any).checked;
-                if (!is_in)
-                  setMyInterests(my_interests.filter((int) => int != interest));
-                else if (!my_interests.includes(interest)) {
-                  let newe = my_interests.slice();
-                  newe.push(interest);
-                  setMyInterests(newe);
-                } else return;
-                setIsUpdate(true);
-              }}
-              checked={my_interests.includes(interest)}
-            ></input>
-            <label htmlFor={interest}>{interest}</label>
-          </div>
-        );
-      })}
-      <p>Now select your skills</p>
-      {skill_sets.map((skill) => {
-        return (
-          <div key={skill.replace(/ /g, "")}>
-            <input
-              type="checkbox"
-              id={skill}
-              onChange={(e) => {
-                let is_in = (e.target as any).checked;
-                if (!is_in)
-                  setMySkills(my_skills.filter((int) => int != skill));
-                else if (!my_skills.includes(skill)) {
-                  let newe = my_skills.slice();
-                  newe.push(skill);
-                  setMySkills(newe);
-                } else return;
-                setIsUpdate(true);
-              }}
-              checked={my_skills.includes(skill)}
-            ></input>
-            <label htmlFor={skill}>{skill}</label>
-          </div>
-        );
-      })}
-      <Link to="/home">
-        <button>Start volunteering</button>
-      </Link>
-    </>
+    <div className="page">
+      <TopNavBar title="Edit profile"></TopNavBar>
+      <div className="onboard-centered">
+        <h2>Welcome!</h2>
+        <input
+          type="text"
+          id="name_entry"
+          value={my_name}
+          placeholder="Name"
+          onChange={(e) => {
+            setMyName(e.target.value);
+            setIsUpdate(true);
+          }}
+        ></input>
+        <p>Short biography:</p>
+        <input
+          type="text"
+          id="bio_entry"
+          placeholder="Bio"
+          value={my_bio}
+          onChange={(e) => {
+            setMyBio(e.target.value);
+            setIsUpdate(true);
+          }}
+        ></input>
+      </div>
+      <div className="horizontal-maybe">
+        <div>
+          <p>Select areas of interest</p>
+          {interests.map((interest) => {
+            return (
+              <div key={interest.replace(/ /g, "")}>
+                <input
+                  type="checkbox"
+                  id={interest}
+                  onChange={(e) => {
+                    let is_in = (e.target as any).checked;
+                    if (!is_in)
+                      setMyInterests(
+                        my_interests.filter((int) => int != interest)
+                      );
+                    else if (!my_interests.includes(interest)) {
+                      let newe = my_interests.slice();
+                      newe.push(interest);
+                      setMyInterests(newe);
+                    } else return;
+                    setIsUpdate(true);
+                  }}
+                  checked={my_interests.includes(interest)}
+                ></input>
+                <label htmlFor={interest}>{interest}</label>
+              </div>
+            );
+          })}
+        </div>
+        <div>
+          <p>Now select your skills</p>
+          {skill_sets.map((skill) => {
+            return (
+              <div key={skill.replace(/ /g, "")}>
+                <input
+                  type="checkbox"
+                  id={skill}
+                  onChange={(e) => {
+                    let is_in = (e.target as any).checked;
+                    if (!is_in)
+                      setMySkills(my_skills.filter((int) => int != skill));
+                    else if (!my_skills.includes(skill)) {
+                      let newe = my_skills.slice();
+                      newe.push(skill);
+                      setMySkills(newe);
+                    } else return;
+                    setIsUpdate(true);
+                  }}
+                  checked={my_skills.includes(skill)}
+                ></input>
+                <label htmlFor={skill}>{skill}</label>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <div className="onboard-centered">
+        <Link to="/home">
+          <button>Start Exploring!</button>
+        </Link>
+      </div>
+    </div>
   );
 };
 

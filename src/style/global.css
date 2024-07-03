@@ -1,0 +1,35 @@
+.outer_page {
+    padding: 1rem;
+    width: 100vw;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+}
+.page {
+    max-width: 40rem;
+}
+.org_page_header {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+ul {
+    margin: 0;
+}
+.horizontal {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.horizontal-maybe {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+@media screen and (max-width: 1280px) {
+    .horizontal-maybe {
+        flex-direction: column;
+    }
+
+}

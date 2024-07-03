@@ -35,13 +35,3 @@
     justify-content: center;
     gap: 1rem;
 }
-@media screen {
-    
-}
-.home_header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 0 2rem;
-    font-size: 1.3rem;
-}

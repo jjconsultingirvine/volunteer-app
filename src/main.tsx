@@ -12,6 +12,7 @@ import OrgPage from "./pages/org_page";
 import clerk_key from "./clerk";
 import Profile from "./pages/profile";
 import Onboard from "./pages/onboard";
+import "./style/global.css";
 
 const router = createBrowserRouter([
   {
@@ -39,7 +40,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ClerkProvider publishableKey={clerk_key}>
-      <RouterProvider router={router} />
+      <div className="outer_page">
+        <RouterProvider router={router} />
+      </div>
     </ClerkProvider>
   </React.StrictMode>
 );

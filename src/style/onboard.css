@@ -1,0 +1,17 @@
+.onboard-centered {
+    text-align: center;
+}
+.onboard-centered > input {
+    border-radius: 0.3rem;
+    font-size: 1rem;
+    width: 100%;
+    display: block;
+    outline: 0.1rem #333 solid;
+    border: none;
+    padding: 0.2rem;
+    transition: outline-width 0.3s ease-in-out;
+}
+.onboard-centered > input:focus {
+    outline: 0.2rem #0060df solid;
+
+}
