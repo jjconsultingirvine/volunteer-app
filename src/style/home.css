@@ -26,7 +26,7 @@
     gap: 1rem;
 }
 .orgs_list {
-    width: 100vw;
+    width: 100%;
     flex-wrap: wrap;
     box-sizing: border-box;
     display: flex;

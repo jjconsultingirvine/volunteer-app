@@ -1,12 +1,15 @@
 .outer_page {
     padding: 1rem;
     width: 100vw;
+    height: 100vh;
     box-sizing: border-box;
     display: flex;
     justify-content: center;
+    align-items: flex-start;
 }
 .page {
-    max-width: 40rem;
+    width: 100%;
+    top: 0;
 }
 .org_page_header {
     font-size: 1.2rem;

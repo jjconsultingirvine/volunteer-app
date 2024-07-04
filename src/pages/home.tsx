@@ -2,6 +2,7 @@ import "../style/home.css"
 import React, { useEffect, useState } from "react"
 import supabase from "../supabase";
 import { SignInButton, SignedIn, SignedOut, UserButton, useSession } from "@clerk/clerk-react";
+import TopNavBar from "../components/top_nav_bar";
 
 
 const Home: React.FC<{}> = () => {
@@ -14,16 +15,8 @@ const Home: React.FC<{}> = () => {
     }));
     },[clerk_session]);
 
-    return <div className="home_page">
-        <div className="home_header">
-        <div>Volunteer App</div>
-        <SignedOut>
-            <SignInButton />
-        </SignedOut>
-        <SignedIn>
-            <UserButton />
-        </SignedIn>
-      </div>
+    return <div className="page">
+        <TopNavBar title="Volunteer App"></TopNavBar>
         <div className="orgs_list">
         
         {orgs.map(org=>
