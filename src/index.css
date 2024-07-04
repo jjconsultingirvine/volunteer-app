@@ -21,8 +21,6 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -30,19 +28,4 @@ body {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
-}
-
-button:not(.cl-button) {
-  background-color: #3C82EA;
-  color: #FFF;
-  border-radius: 0.5rem;  
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  cursor: pointer;
-  border: none;
-  transition: 0.2s background-color;
-}
-button:hover:not(.cl-button) {
-  background-color: #5b92e5;
 }

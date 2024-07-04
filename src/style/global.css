@@ -1,19 +1,24 @@
 .outer_page {
-    padding: 1rem;
     width: 100vw;
     height: 100vh;
     box-sizing: border-box;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    top: 0;
 }
 .page {
     width: 100%;
     top: 0;
+    padding: 1rem;
+    box-sizing: border-box;
 }
-.org_page_header {
-    font-size: 1.2rem;
-    font-weight: bold;
+h2 {
+    margin-bottom: 0.4rem;
+}
+.narrow-page {
+    max-width: 50rem;
 }
 ul {
     margin: 0;
@@ -28,6 +33,21 @@ ul {
     flex-direction: row;
     gap: 1rem;
     align-items: flex-start;
+}
+
+button:not(.cl-button) {
+  background-color: #3C82EA;
+  color: #FFF;
+  border-radius: 0.5rem;  
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: 0.2s background-color;
+}
+button:hover:not(.cl-button) {
+  background-color: #5b92e5;
 }
 
 @media screen and (max-width: 1280px) {

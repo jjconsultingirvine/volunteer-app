@@ -23,69 +23,61 @@ const OrgPage: React.FC<{}> = () => {
   }, [clerk_session]);
   return (
     org && (
-      <div className="org_page_outer">
-        <div className="page">
-          <TopNavBar title={org.name}></TopNavBar>
-          <div className="horizontal-maybe">
+      <div className="outer_page">
+        <TopNavBar title={org.name}></TopNavBar>
+        <div className="page narrow-page">
+          <div className="horizontal">
+            {org.pfp && <img src={org.pfp} className="org_pfp" />}
+            <div className="org_page_short_desc">{org.short_desc}</div>
+          </div>
+          <div className="org_desc">{org.long_desc}</div>
+          {org.volunteer_requirements && (
             <div>
-              <div className="horizontal">
-                {org.pfp && <img src={org.pfp} className="org_pfp" />}
-                <div className="org_page_short_desc">{org.short_desc}</div>
-              </div>
-              <div className="org_desc">{org.long_desc}</div>
-              {org.volunteer_requirements && (
-                <div>
-                  <div className="org_page_header">Requirements</div>
-                  <ul>
-                    {org.volunteer_requirements
-                      .split(",")
-                      .map((req: string) => (
-                        <li key={req}>{req}</li>
-                      ))}
-                  </ul>
-                </div>
-              )}
+              <h2>Requirements</h2>
+              <ul>
+                {org.volunteer_requirements.split(",").map((req: string) => (
+                  <li key={req}>{req}</li>
+                ))}
+              </ul>
             </div>
+          )}
+          {(org.phone || org.email) && (
+            <h2>Contact</h2>
+          )}
+          {org.phone && (
             <div>
-              {(org.phone || org.email) && (
-                <div className="org_page_header">Contact</div>
-              )}
-              {org.phone && (
-                <div>
-                  Phone: <a href={"tel:" + org.phone}>{org.phone}</a>
-                </div>
-              )}
-              {org.email && (
-                <div>
-                  Email: <a href={"mailto:" + org.email}>{org.email}</a>
-                </div>
-              )}
-              {org.address && (
-                <div>
-                  Address:{" "}
-                  <a
-                    href={
-                      "https://www.google.com/maps/search/" +
-                      encodeURIComponent(org.address)
-                    }
-                  >
-                    {org.address}
-                  </a>
-                </div>
-              )}
-              <div className="org_buttons">
-                {org.website && (
-                  <button onClick={() => (window.location.href = org.website)}>
-                    Visit Website
-                  </button>
-                )}
-                {org.sign_up && (
-                  <button onClick={() => (window.location.href = org.sign_up)}>
-                    Sign Up
-                  </button>
-                )}
-              </div>
+              Phone: <a href={"tel:" + org.phone}>{org.phone}</a>
             </div>
+          )}
+          {org.email && (
+            <div>
+              Email: <a href={"mailto:" + org.email}>{org.email}</a>
+            </div>
+          )}
+          {org.address && (
+            <div>
+              Address:{" "}
+              <a
+                href={
+                  "https://www.google.com/maps/search/" +
+                  encodeURIComponent(org.address)
+                }
+              >
+                {org.address}
+              </a>
+            </div>
+          )}
+          <div className="org_buttons">
+            {org.website && (
+              <button onClick={() => (window.location.href = org.website)}>
+                Visit Website
+              </button>
+            )}
+            {org.sign_up && (
+              <button onClick={() => (window.location.href = org.sign_up)}>
+                Sign Up
+              </button>
+            )}
           </div>
         </div>
       </div>

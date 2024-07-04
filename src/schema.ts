@@ -54,6 +54,7 @@ interface Organization {
     long_desc: string
     volunteer_requirements: string
     keywords: string[]
+    roles: Role[]
     address: string
     phone: string
     email: string
