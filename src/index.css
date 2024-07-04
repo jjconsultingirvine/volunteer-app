@@ -12,8 +12,8 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+  color: #0000ff;
+  transition: 0.1s ease color;
 }
 a:hover {
   color: #535bf2;

@@ -4,14 +4,40 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     font-size: 1.2rem;
+    margin-top: 0.8rem;
 }
-.org_buttons > button {
+.org_buttons > a > button {
     font-weight: bold;
+    width: 100%;
 }
 .org_desc {
     padding-top: 1rem;
 }
-.org_page_  short_desc {
+.org_page_short_desc {
     font-size: 1.3rem;
     font-weight: bold;
+}
+.role_name {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+.role_skills:before {
+    content: "Skills: ";
+}
+.role_skills, .role_details {
+    margin-left: 1rem;
+}
+.org_log_hours > a > button {
+    width: 100%;
+    margin-top: 1rem;
+    font-weight: bold;
+    font-size: 1.2rem;
+    background: #DDD;
+    color: #000;
+    transition: box-shadow 0.3s ease;
+}
+.org_log_hours > a > button:hover {
+    box-shadow: 1px 1px 8px 0 rgba(0,0,0,0.2);
+    background: #DDD;
+
 }

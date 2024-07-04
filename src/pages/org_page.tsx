@@ -4,6 +4,7 @@ import supabase from "../supabase";
 import "../style/org_page.css";
 import { useSession } from "@clerk/clerk-react";
 import TopNavBar from "../components/top_nav_bar";
+import { Link } from "react-router-dom";
 
 const OrgPage: React.FC<{}> = () => {
   const clerk_session = useSession().session;
@@ -30,20 +31,30 @@ const OrgPage: React.FC<{}> = () => {
             {org.pfp && <img src={org.pfp} className="org_pfp" />}
             <div className="org_page_short_desc">{org.short_desc}</div>
           </div>
+          <div className="org_interest">
+            Organization Interest:{" "}
+            <Link to={"/search/" + encodeURIComponent(org.interest)}>
+              {org.interest}
+            </Link>
+          </div>
           <div className="org_desc">{org.long_desc}</div>
-          {org.volunteer_requirements && (
-            <div>
-              <h2>Requirements</h2>
-              <ul>
-                {org.volunteer_requirements.split(",").map((req: string) => (
-                  <li key={req}>{req}</li>
-                ))}
-              </ul>
-            </div>
+          {org.roles.length > 0 && (
+            <>
+              <h2>Volunteer Roles</h2>
+              {org.roles.map((role: any) => (
+                <div key={role.name} className="role">
+                  <div className="role_name">{role.name}</div>
+                  <div className="role_skills">
+                    {role.skills.length
+                      ? role.skills.join(", ")
+                      : "No skills required"}
+                  </div>
+                  <div className="role_details">{role.details}</div>
+                </div>
+              ))}
+            </>
           )}
-          {(org.phone || org.email) && (
-            <h2>Contact</h2>
-          )}
+          {(org.phone || org.email) && <h2>Contact</h2>}
           {org.phone && (
             <div>
               Phone: <a href={"tel:" + org.phone}>{org.phone}</a>
@@ -69,15 +80,18 @@ const OrgPage: React.FC<{}> = () => {
           )}
           <div className="org_buttons">
             {org.website && (
-              <button onClick={() => (window.location.href = org.website)}>
-                Visit Website
-              </button>
+              <a href={org.website}>
+                <button>Visit Website</button>
+              </a>
             )}
             {org.sign_up && (
-              <button onClick={() => (window.location.href = org.sign_up)}>
-                Sign Up
-              </button>
+              <a href={org.sign_up}>
+                <button>Sign Up</button>
+              </a>
             )}
+          </div>
+          <div className="org_log_hours">
+            <a href={"/log/"+org.pretty_name}><button>Log Hours</button></a>
           </div>
         </div>
       </div>

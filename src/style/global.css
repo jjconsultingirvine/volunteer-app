@@ -13,6 +13,7 @@
     top: 0;
     padding: 1rem;
     box-sizing: border-box;
+    padding-bottom: 3rem;
 }
 h2 {
     margin-bottom: 0.4rem;
@@ -53,6 +54,11 @@ button:hover:not(.cl-button) {
 @media screen and (max-width: 1280px) {
     .horizontal-maybe {
         flex-direction: column;
+    }
+}
+@media screen and (min-width: 720px) {
+    .page {
+        padding-bottom: 10rem;
     }
 
 }
