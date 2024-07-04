@@ -81,7 +81,7 @@ const OrgPage: React.FC<{}> = () => {
           <div className="org_buttons">
             {org.website && (
               <a href={org.website}>
-                <button>Visit Website</button>
+                <button>Website</button>
               </a>
             )}
             {org.sign_up && (

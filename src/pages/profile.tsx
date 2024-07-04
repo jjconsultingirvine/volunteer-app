@@ -46,8 +46,9 @@ const Profile: React.FC<Props> = (props: Props) => {
       .concat(0)
       .reduce((l, r) => l + r) / 60;
   return (
-    <div className="page">
+    <>
       <TopNavBar title={data ? data.Name : ""}></TopNavBar>
+    <div className="page">
       {data && (
         <>
           <div className="horizontal">
@@ -72,6 +73,8 @@ const Profile: React.FC<Props> = (props: Props) => {
               </strong>{" "}
               volunteering!
             </p>
+            <div>Interests: {data.interests.replace(/,/g,", ")}</div>
+            <div>Skills: {data.skills.replace(/,/g,", ")}</div>
           </div>
           <h2>Volunteer History</h2>
           <div className="experiences_list">
@@ -106,7 +109,7 @@ const Profile: React.FC<Props> = (props: Props) => {
           </div>
         </>
       )}
-    </div>
+    </div></>
   );
 };
 export default Profile;
