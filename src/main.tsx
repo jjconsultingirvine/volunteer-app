@@ -13,6 +13,7 @@ import clerk_key from "./clerk";
 import Profile from "./pages/profile";
 import Onboard from "./pages/onboard";
 import "./style/global.css";
+import LogHours from "./pages/log_hours";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
   {
     path: "/onboard",
     element: <Onboard></Onboard>
+  },
+  {
+    path: "/log/:organization_name",
+    element: <LogHours></LogHours>
   }
 ]);
 

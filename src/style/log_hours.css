@@ -1,0 +1,61 @@
+#log_hours {
+    max-width: 30rem;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+#log_hours * {
+    font-size: 1.5rem; 
+}
+#log_hours input[type="text"] {
+    border: 2px black solid;
+    border-radius: 0.4rem;
+    padding: 0.4rem;
+    box-sizing: border-box;
+}
+#log_hours input[type="radio"] {
+    vertical-align: middle;
+    margin-top: -0.3rem;
+    transform: scale(1.5);
+    margin-left: 1.2rem;
+    margin-right: 0.8rem;
+}
+#log_hours input[type="text"]:not(.log_duration) {
+    width: calc(min(100%,30rem));
+}
+#log_hours input[type="text"]:focus {
+    border: 2px blue solid;
+    outline: 2px blue solid;
+}
+
+input.input_invalid {
+    outline: red solid 0.2rem;
+}
+button.input_invalid {
+    background: #EEE;
+    color: #000;
+}
+button.input_invalid:hover {
+    background: #eee;
+    cursor: inherit;
+}
+.error_message {
+    color: #880000;
+}
+
+.duration_holder {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+}
+.log_duration {
+    width: 100%;
+    box-sizing: border-box;
+}
+.duration_holder > span {
+    line-height: 2.3rem;
+
+}
+#log_hours button {
+    width: 100%;
+    margin-top: 1rem;
+}

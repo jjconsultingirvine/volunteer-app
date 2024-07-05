@@ -23,6 +23,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
     gap: 1rem;
 }
 .orgs_list {
@@ -31,7 +32,19 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
-    padding: 1rem;
     justify-content: center;
     gap: 1rem;
+}
+.toggle_save {
+    margin-right: 0.5rem;
+}
+.toggle_save:not(.cl-button), .log_hours_btn:not(.cl-button) {
+    background: #EEE;
+    color: #000;
+}
+.toggle_save:hover:not(.cl-button), .log_hours_btn:hover:not(.cl-button) {
+    background: #DDD;
+}
+.org_listing button {
+    font-weight: bold;
 }

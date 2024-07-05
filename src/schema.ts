@@ -45,6 +45,7 @@ interface Role {
     name: string
     skills: string[]
     details: string
+    interest: string
 }
 
 interface Organization {
@@ -52,7 +53,7 @@ interface Organization {
     website: string
     short_desc: string
     long_desc: string
-    volunteer_requirements: string
+    general_requirements: string
     keywords: string[]
     roles: Role[]
     address: string

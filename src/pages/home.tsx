@@ -1,40 +1,86 @@
-import "../style/home.css"
-import React, { useEffect, useState } from "react"
+import "../style/home.css";
+import React, { useEffect, useState } from "react";
 import supabase from "../supabase";
-import { SignInButton, SignedIn, SignedOut, UserButton, useSession } from "@clerk/clerk-react";
+import { useSession } from "@clerk/clerk-react";
 import TopNavBar from "../components/top_nav_bar";
-
+import OrgListing from "../components/org_listing";
 
 const Home: React.FC<{}> = () => {
-    const clerk_session = useSession().session;
-    const [orgs, setOrgs] = useState([] as any[]);
-    useEffect(() => {
-        supabase(clerk_session).then(sup=>sup.from("organizations").select().then(data=>{
-            console.log(data);
-            setOrgs(data.data!)
-    }));
-    },[clerk_session]);
+  const clerk_session = useSession().session;
+  const [orgs, setOrgs] = useState([] as any[]);
+  const [user, setUser] = useState(null as any);
+  useEffect(() => {
+    supabase(clerk_session).then((sup) => {
+      sup
+        .from("organizations")
+        .select()
+        .then((data) => {
+          console.log(data);
+          setOrgs(data.data!);
+        });
+      if (clerk_session)
+        sup
+          .from("profiles")
+          .select()
+          .eq("user_id", clerk_session.user.id)
+          .then((data) => setUser(data.data![0]));
+    });
+  }, [clerk_session]);
+  const toggle_save = (name: string) => {
+    if (!user) return;
+    let new_saved = (user as any).saved as string[];
+    if (new_saved.includes(name)) {
+      new_saved.splice(new_saved.indexOf(name), 1);
+    } else {
+      new_saved.push(name);
+    }
+    console.log(new_saved);
+    setUser({ saved: new_saved, ...(user as any) });
+    supabase(clerk_session).then((sup) => {
+      sup
+        .from("profiles")
+        .update({ saved: new_saved })
+        .eq("user_id", clerk_session!.user.id)
+        .then((val) => console.log(val));
+    });
+  };
+  let saved_list = [] as any[];
+  let recommended_list = [] as any[];
+  let unsaved_list = [] as any[];
+  orgs.forEach((org) => {
+    if (user && (user.saved as string[]).includes(org.pretty_name))
+      saved_list.push(org);
+    else if (
+      user &&
+      user.interests.includes(org.interest) &&
+      org.roles
+        .map((role: { skills: string[] }) =>
+          role.skills.every((skill) => user.skills.includes(skill))
+        )
+        .some((n: boolean) => n)
+    )
+      recommended_list.push(org);
+    else unsaved_list.push(org);
+  });
 
-    return <div className="page">
-        <TopNavBar title="Volunteer App"></TopNavBar>
+  return (
+    <div className="page">
+      <TopNavBar title="Volunteer App"></TopNavBar>
+      <div className="orgs_list">
+        {saved_list.length != 0 && <h2>Saved</h2>}
         <div className="orgs_list">
-        
-        {orgs.map(org=>
-            <div key={org.id} className="org_listing">
-                <div>
-                    {org.pfp && <img src={org.pfp} className="org_pfp"/>}
-                    <div className="org_name">{org.name}</div>
-                </div>
-                <div>
-                    <div className="org_short_desc">
-                        {org.short_desc}
-                    </div>
-                    <button className="explore_button" onClick={()=>window.location.href="/org/"+org.pretty_name}>Explore</button>
-                </div>
-            </div>
-
-        )}    
+        {saved_list.map((org)=> (<OrgListing org={org} saved save_callback={toggle_save}></OrgListing>))}
+        </div>
+        {recommended_list.length != 0 && <h2>Recommended</h2>}
+        <div className="orgs_list">
+        {recommended_list.map(org => (<OrgListing org={org} saved={false} save_callback={toggle_save}></OrgListing>))}
+        </div>
+        {unsaved_list.length != 0 && <h2>All Organizations</h2>}
+        <div className="orgs_list">
+        {unsaved_list.map(org => (<OrgListing org={org} saved={false} save_callback={toggle_save}></OrgListing>))}
+        </div>
+      </div>
     </div>
-    </div>;
-}
+  );
+};
 export default Home;
