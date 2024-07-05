@@ -13,12 +13,14 @@ const Onboard: React.FC<{}> = () => {
   const [my_name, setMyName] = useState("");
   const [my_bio, setMyBio] = useState("");
   const [is_update, setIsUpdate] = useState(false);
-  let profile = {
-    Name: my_name,
-    interests: my_interests.join(","),
-    pfp: clerk_session?.user.hasImage ? clerk_session.user.imageUrl : null,
-    skills: my_skills.join(","),
-    user_id: clerk_session?.user.id,
+  let profile: User = {
+    name: my_name,
+    random_id: Math.floor(Math.random() * 100000000),
+    saved: [],
+    interests: my_interests,
+    pfp: clerk_session?.user.hasImage ? clerk_session.user.imageUrl : undefined,
+    skills: my_skills,
+    user_id: clerk_session?.user.id || "",
     description: my_bio,
   };
   useEffect(() => {
@@ -28,33 +30,22 @@ const Onboard: React.FC<{}> = () => {
           .from("profiles")
           .select()
           .eq("user_id", clerk_session.user.id)
-          .then((data) => {
+          .then((data: { data: User[] | null }) => {
             if (!data.data || data.data.length == 0) {
               if (clerk_session.user.fullName) {
-                console.log("setting your name");
                 setMyName(clerk_session.user.fullName);
               }
               sup
                 .from("profiles")
                 .insert(profile)
-                .then((val) => {
+                .then(() => {
                   console.log("Inserted new user");
-                  console.log(val);
                 });
             } else if (data.data) {
-              console.log(data.data[0]);
-              setMyInterests(
-                data.data[0].interests
-                  .split(",")
-                  .filter((int: string) => int.length != 0)
-              );
-              setMySkills(
-                data.data[0].skills
-                  .split(",")
-                  .filter((sk: string) => sk.length != 0)
-              );
-              setMyName(data.data[0].Name);
-              setMyBio(data.data[0].description);
+              setMyInterests(data.data[0].interests);
+              setMySkills(data.data[0].skills);
+              setMyName(data.data[0].name);
+              setMyBio(data.data[0].description || "");
             }
           })
       );
@@ -68,12 +59,15 @@ const Onboard: React.FC<{}> = () => {
   }, [is_update]);
   const post_update = async () => {
     if (clerk_session) {
-      console.log("updating to");
-      console.log(profile);
       let sup = await supabase(clerk_session);
       await sup
         .from("profiles")
-        .update(profile)
+        .update({
+          interests: my_interests,
+          name: my_name,
+          skills: my_skills,
+          description: my_bio,
+        })
         .eq("user_id", clerk_session.user.id);
     }
   };

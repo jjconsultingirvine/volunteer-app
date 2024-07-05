@@ -4,11 +4,12 @@ import supabase from "../supabase";
 import { useSession } from "@clerk/clerk-react";
 import TopNavBar from "../components/top_nav_bar";
 import OrgListing from "../components/org_listing";
+import { Organization, User } from "../schema";
 
 const Home: React.FC<{}> = () => {
   const clerk_session = useSession().session;
-  const [orgs, setOrgs] = useState([] as any[]);
-  const [user, setUser] = useState(null as any);
+  const [orgs, setOrgs] = useState([] as Organization[]);
+  const [user, setUser] = useState(null as User | null);
   useEffect(() => {
     supabase(clerk_session).then((sup) => {
       sup
@@ -48,14 +49,17 @@ const Home: React.FC<{}> = () => {
   let recommended_list = [] as any[];
   let unsaved_list = [] as any[];
   orgs.forEach((org) => {
-    if (user && (user.saved as string[]).includes(org.pretty_name))
+    if (user && (user.saved as string[]).includes(org.url_name))
       saved_list.push(org);
     else if (
       user &&
-      user.interests.includes(org.interest) &&
       org.roles
-        .map((role: { skills: string[] }) =>
-          role.skills.every((skill) => user.skills.includes(skill))
+        .map(
+          (role) =>
+            role.skills.every((skill) => user.skills.includes(skill)) &&
+            user.interests.includes(
+              role.interest ? role.interest : org.interest
+            )
         )
         .some((n: boolean) => n)
     )
@@ -69,15 +73,33 @@ const Home: React.FC<{}> = () => {
       <div className="orgs_list">
         {saved_list.length != 0 && <h2>Saved</h2>}
         <div className="orgs_list">
-        {saved_list.map((org)=> (<OrgListing org={org} saved save_callback={toggle_save}></OrgListing>))}
+          {saved_list.map((org) => (
+            <OrgListing
+              org={org}
+              saved
+              save_callback={toggle_save}
+            ></OrgListing>
+          ))}
         </div>
         {recommended_list.length != 0 && <h2>Recommended</h2>}
         <div className="orgs_list">
-        {recommended_list.map(org => (<OrgListing org={org} saved={false} save_callback={toggle_save}></OrgListing>))}
+          {recommended_list.map((org) => (
+            <OrgListing
+              org={org}
+              saved={false}
+              save_callback={toggle_save}
+            ></OrgListing>
+          ))}
         </div>
         {unsaved_list.length != 0 && <h2>All Organizations</h2>}
         <div className="orgs_list">
-        {unsaved_list.map(org => (<OrgListing org={org} saved={false} save_callback={toggle_save}></OrgListing>))}
+          {unsaved_list.map((org) => (
+            <OrgListing
+              org={org}
+              saved={false}
+              save_callback={toggle_save}
+            ></OrgListing>
+          ))}
         </div>
       </div>
     </div>

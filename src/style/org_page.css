@@ -24,7 +24,10 @@
 .role_skills:before {
     content: "Skills: ";
 }
-.role_skills, .role_details {
+.role_interest:before {
+    content: "Interest: ";
+}
+.role_skills, .role_details, .role_interest, .role_requirements {
     margin-left: 1rem;
 }
 .org_log_hours > a > button {

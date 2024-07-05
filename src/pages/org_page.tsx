@@ -5,15 +5,16 @@ import "../style/org_page.css";
 import { useSession } from "@clerk/clerk-react";
 import TopNavBar from "../components/top_nav_bar";
 import { Link } from "react-router-dom";
+import { Organization, Role } from "../schema";
 
 const OrgPage: React.FC<{}> = () => {
   const clerk_session = useSession().session;
   console.log(clerk_session);
   const org_id = useParams().org_id;
-  const [org, setOrg] = useState(null) as any;
+  const [org, setOrg] = useState(null as Organization | null);
   async function get_org() {
     const { data } = await supabase(clerk_session).then((sup) =>
-      sup.from("organizations").select().eq("pretty_name", org_id)
+      sup.from("organizations").select().eq("url_name", org_id)
     );
     console.log(data);
     setOrg(data![0]);
@@ -38,17 +39,28 @@ const OrgPage: React.FC<{}> = () => {
             </Link>
           </div>
           <div className="org_desc">{org.long_desc}</div>
+          {org.general_requirements.length > 0 && <><h2>General Requirements</h2><ul>{org.general_requirements.map(req=>(<li key={req}>{req}</li>))}</ul></>}
           {org.roles.length > 0 && (
             <>
               <h2>Volunteer Roles</h2>
-              {org.roles.map((role: any) => (
+              {org.roles.map((role: Role) => (
                 <div key={role.name} className="role">
-                  <div className="role_name">{role.name}</div>
+                  {role.link ? (
+                    <a href={role.link}>
+                      <div className="role_name">{role.name}</div>
+                    </a>
+                  ) : (
+                    <div className="role_name">{role.name}</div>
+                  )}
                   <div className="role_skills">
                     {role.skills.length
                       ? role.skills.join(", ")
                       : "No skills required"}
                   </div>
+                  {role.interest && (
+                    <div className="role_interest">{role.interest}</div>
+                  )}
+                  {role.requirements && <div className="role_requirements">Requirements:<ul>{role.requirements.map(req=>(<li key={req}>{req}</li>))}</ul></div>}
                   <div className="role_details">{role.details}</div>
                 </div>
               ))}
@@ -91,7 +103,9 @@ const OrgPage: React.FC<{}> = () => {
             )}
           </div>
           <div className="org_log_hours">
-            <a href={"/log/"+org.pretty_name}><button>Log Hours</button></a>
+            <a href={"/log/" + org.url_name}>
+              <button>Log Hours</button>
+            </a>
           </div>
         </div>
       </div>

@@ -25,12 +25,13 @@ const skill_sets = [
 
 interface User {
     name: string
-    pfp: string
-    random_id: number
     user_id: string
+    random_id: number
     skills: string[]
     interests: string[]
-    description: string
+    saved: string[]
+    pfp?: string
+    description?: string
 }
 
 interface Experience {
@@ -45,23 +46,28 @@ interface Role {
     name: string
     skills: string[]
     details: string
-    interest: string
+    interest?: string
+    requirements?: string[]
+    link?: string
 }
 
 interface Organization {
     name: string
-    website: string
+    url_name: string
     short_desc: string
     long_desc: string
-    general_requirements: string
+    interest: string
+
+    general_requirements: string[]
     keywords: string[]
     roles: Role[]
-    address: string
-    phone: string
-    email: string
-    sign_up: string
-    pfp: string
-    pretty_name: string
+
+    website?: string
+    address?: string
+    phone?: string
+    email?: string
+    sign_up?: string
+    pfp?: string
 }
 
 export { interests, skill_sets };

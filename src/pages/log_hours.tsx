@@ -5,6 +5,7 @@ import { useSession } from "@clerk/clerk-react";
 import supabase from "../supabase";
 
 import "../style/log_hours.css";
+import { Organization, User } from "../schema";
 
 const LogHours: React.FC<{}> = () => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const LogHours: React.FC<{}> = () => {
     }`
   );
   const [selected_role, setRole] = useState("Other");
-  const [org, setOrg] = useState({ roles: [] } as any);
+  const [org, setOrg] = useState({ roles: [] } as any as Organization);
   const [other_role, setOtherRole] = useState("");
   const [custom_org_name, setCustomOrgName] = useState("");
   const [duration, setDuration] = useState("");
@@ -26,7 +27,7 @@ const LogHours: React.FC<{}> = () => {
       sup
         .from("organizations")
         .select()
-        .eq("pretty_name", organization_name)
+        .eq("url_name", organization_name)
         .then((data) => {
           if (!data.data) return;
           if (data.data!.length != 0) setOrg(data.data![0]);
@@ -42,13 +43,12 @@ const LogHours: React.FC<{}> = () => {
     if (!validDate) return;
     if (!validDuration) return;
     if (!session) return alert("User is not signed in");
-    console.log("Ready to submit");
     supabase(session).then((sup) => {
       sup
         .from("profiles")
         .select()
         .eq("user_id", session.user.id)
-        .then((user) => {
+        .then((user: {data: User[] | null}) => {
           const timestamp = new Date();
           const date_nums = date.split("/").map((num) => Number(num));
           timestamp.setMonth(date_nums[0] - 1, date_nums[1]);
@@ -72,7 +72,6 @@ const LogHours: React.FC<{}> = () => {
                 : org.name,
             time: timestamp,
           };
-          console.log(object);
           sup.from("experiences").insert(object).then(val => {
             if(val.status != 201) return alert("Database could not be updated");
             else navigate(-1);
