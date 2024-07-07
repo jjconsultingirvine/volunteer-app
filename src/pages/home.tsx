@@ -1,63 +1,42 @@
 import "../style/home.css";
-import React, { useEffect, useState } from "react";
-import supabase from "../supabase";
-import { useSession } from "@clerk/clerk-react";
+import React from "react";
 import TopNavBar from "../components/top_nav_bar";
 import OrgListing from "../components/org_listing";
 import { Organization, User } from "../schema";
+import { SupabaseClient } from "@supabase/supabase-js";
 
-const Home: React.FC<{}> = () => {
-  const clerk_session = useSession().session;
-  const [orgs, setOrgs] = useState([] as Organization[]);
-  const [user, setUser] = useState(null as User | null);
-  useEffect(() => {
-    supabase(clerk_session).then((sup) => {
-      sup
-        .from("organizations")
-        .select()
-        .then((data) => {
-          console.log(data);
-          setOrgs(data.data!);
-        });
-      if (clerk_session)
-        sup
-          .from("profiles")
-          .select()
-          .eq("user_id", clerk_session.user.id)
-          .then((data) => setUser(data.data![0]));
-    });
-  }, [clerk_session]);
+interface Props {
+    supabase: SupabaseClient<any, "public", any>
+    clerk_session: any
+    user: User | null
+    orgs: Organization[]
+    setUser: (usr: User) => void,
+}
+
+const Home: React.FC<Props> = (props: Props) => {
   const toggle_save = (name: string) => {
-    if (!user) return;
-    let new_saved = (user as any).saved as string[];
+    if (!props.user) return;
+    let new_saved = props.user.saved.slice();
     if (new_saved.includes(name)) {
       new_saved.splice(new_saved.indexOf(name), 1);
     } else {
       new_saved.push(name);
     }
-    console.log(new_saved);
-    setUser({ saved: new_saved, ...(user as any) });
-    supabase(clerk_session).then((sup) => {
-      sup
-        .from("profiles")
-        .update({ saved: new_saved })
-        .eq("user_id", clerk_session!.user.id)
-        .then((val) => console.log(val));
-    });
+    props.setUser({ ...(props.user), saved: new_saved });
   };
-  let saved_list = [] as any[];
-  let recommended_list = [] as any[];
-  let unsaved_list = [] as any[];
-  orgs.forEach((org) => {
-    if (user && (user.saved as string[]).includes(org.url_name))
+  let saved_list = [] as Organization[];
+  let recommended_list = [] as Organization[];
+  let unsaved_list = [] as Organization[];
+  (props.orgs || []).forEach((org) => {
+    if (props.user && (props.user.saved).includes(org.url_name))
       saved_list.push(org);
     else if (
-      user &&
+      props.user &&
       org.roles
         .map(
           (role) =>
-            role.skills.every((skill) => user.skills.includes(skill)) &&
-            user.interests.includes(
+            role.skills.every((skill) => props.user!.skills.includes(skill)) &&
+            props.user!.interests.includes(
               role.interest ? role.interest : org.interest
             )
         )
@@ -78,6 +57,7 @@ const Home: React.FC<{}> = () => {
               org={org}
               saved
               save_callback={toggle_save}
+              key={org.url_name}
             ></OrgListing>
           ))}
         </div>
@@ -88,6 +68,7 @@ const Home: React.FC<{}> = () => {
               org={org}
               saved={false}
               save_callback={toggle_save}
+              key={org.url_name}
             ></OrgListing>
           ))}
         </div>
@@ -98,6 +79,7 @@ const Home: React.FC<{}> = () => {
               org={org}
               saved={false}
               save_callback={toggle_save}
+              key={org.url_name}
             ></OrgListing>
           ))}
         </div>

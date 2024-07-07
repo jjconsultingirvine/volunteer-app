@@ -1,28 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import supabase from "../supabase";
 import "../style/org_page.css";
 import { useSession } from "@clerk/clerk-react";
 import TopNavBar from "../components/top_nav_bar";
 import { Link } from "react-router-dom";
 import { Organization, Role } from "../schema";
+import { SupabaseClient } from "@supabase/supabase-js";
 
-const OrgPage: React.FC<{}> = () => {
+interface Props {
+  supabase: SupabaseClient<any, "public", any>;
+  clerk_session: any;
+  orgs: Organization[];
+}
+
+const OrgPage: React.FC<Props> = (props: Props) => {
   const clerk_session = useSession().session;
   console.log(clerk_session);
   const org_id = useParams().org_id;
-  const [org, setOrg] = useState(null as Organization | null);
-  async function get_org() {
-    const { data } = await supabase(clerk_session).then((sup) =>
-      sup.from("organizations").select().eq("url_name", org_id)
-    );
-    console.log(data);
-    setOrg(data![0]);
-    console.log(data![0]);
-  }
-  useEffect(() => {
-    get_org();
-  }, [clerk_session]);
+  const org = props.orgs.filter(org=>org.url_name == org_id)[0] || null;
   return (
     org && (
       <div className="outer_page">
@@ -103,9 +98,9 @@ const OrgPage: React.FC<{}> = () => {
             )}
           </div>
           <div className="org_log_hours">
-            <a href={"/log/" + org.url_name}>
+            <Link to={"/log/" + org.url_name}>
               <button>Log Hours</button>
-            </a>
+            </Link>
           </div>
         </div>
       </div>

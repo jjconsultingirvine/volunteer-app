@@ -1,52 +1,18 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
 
 import { ClerkProvider } from '@clerk/clerk-react'
 import "./index.css";
-import Home from "./pages/home";
-import OrgPage from "./pages/org_page";
 import clerk_key from "./clerk";
-import Profile from "./pages/profile";
-import Onboard from "./pages/onboard";
 import "./style/global.css";
-import LogHours from "./pages/log_hours";
+import App from "./App";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <div>Hello world!</div>,
-  },
-  {
-    path: "/home",
-    element: <Home></Home>
-  },
-  {
-    path: "/org/:org_id",
-    element: <OrgPage></OrgPage>
-  },
-  {
-    path: "/profile/:profile_id",
-    element: <Profile></Profile>
-  },
-  {
-    path: "/onboard",
-    element: <Onboard></Onboard>
-  },
-  {
-    path: "/log/:organization_name",
-    element: <LogHours></LogHours>
-  }
-]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ClerkProvider publishableKey={clerk_key}>
       <div className="outer_page">
-        <RouterProvider router={router} />
+        <App></App>
       </div>
     </ClerkProvider>
   </React.StrictMode>

@@ -1,39 +1,32 @@
 import { useNavigate, useParams } from "react-router";
 import TopNavBar from "../components/top_nav_bar";
-import { useEffect, useState } from "react";
-import { useSession } from "@clerk/clerk-react";
-import supabase from "../supabase";
+import { useState } from "react";
 
 import "../style/log_hours.css";
 import { Organization, User } from "../schema";
+import { SupabaseClient } from "@supabase/supabase-js";
 
-const LogHours: React.FC<{}> = () => {
+interface Props {
+  supabase: SupabaseClient<any, "public", any>;
+  clerk_session: any;
+  user: User | null;
+  orgs: Organization[];
+  setUser: (usr: User) => void;
+}
+
+const LogHours: React.FC<Props> = (props: Props) => {
   const navigate = useNavigate();
   const { organization_name } = useParams();
-  const session = useSession().session;
   const [date, setDate] = useState(
     `${new Date().getMonth() + 1}/${new Date().getDate()}/${
       new Date().getFullYear() - 2000
     }`
   );
   const [selected_role, setRole] = useState("Other");
-  const [org, setOrg] = useState({ roles: [] } as any as Organization);
+  const org: Organization | null = props.orgs.filter((org) => org.url_name == organization_name)[0];
   const [other_role, setOtherRole] = useState("");
   const [custom_org_name, setCustomOrgName] = useState("");
   const [duration, setDuration] = useState("");
-  useEffect(() => {
-    if (!session) return;
-    supabase(session).then((sup) => {
-      sup
-        .from("organizations")
-        .select()
-        .eq("url_name", organization_name)
-        .then((data) => {
-          if (!data.data) return;
-          if (data.data!.length != 0) setOrg(data.data![0]);
-        });
-    });
-  });
   const validDate =
     date.match(
       /^([01]{0,1})([0123456789]{1})\/([0123]{0,1})([0123456789]{1})(\/[0123456789]{2,4}){0,1}$/
@@ -42,49 +35,41 @@ const LogHours: React.FC<{}> = () => {
   const submit = () => {
     if (!validDate) return;
     if (!validDuration) return;
-    if (!session) return alert("User is not signed in");
-    supabase(session).then((sup) => {
-      sup
-        .from("profiles")
-        .select()
-        .eq("user_id", session.user.id)
-        .then((user: {data: User[] | null}) => {
-          const timestamp = new Date();
-          const date_nums = date.split("/").map((num) => Number(num));
-          timestamp.setMonth(date_nums[0] - 1, date_nums[1]);
-          // Assume middle of the day so no funky timezone stuff happens
-          timestamp.setHours(12);
-          if (date.split("/")[2]) {
-            if (date.split("/")[2].length == 2)
-              timestamp.setFullYear(2000 + date_nums[2]);
-            else timestamp.setFullYear(date_nums[2]);
-          }
-          const object = {
-            duration: Number(duration) || 60,
-            role:
-              selected_role == "Other" || organization_name == "custom"
-                ? other_role
-                : selected_role,
-            random_user_id: user.data![0].random_id,
-            org_name:
-              organization_name == "custom"
-                ? custom_org_name
-                : org.name,
-            time: timestamp,
-          };
-          sup.from("experiences").insert(object).then(val => {
-            if(val.status != 201) return alert("Database could not be updated");
-            else navigate(-1);
-          });
-        });
-    });
+    if (!props.user) return alert("User is not signed in");
+    const timestamp = new Date();
+    const date_nums = date.split("/").map((num) => Number(num));
+    timestamp.setMonth(date_nums[0] - 1, date_nums[1]);
+    // Assume middle of the day so no funky timezone stuff happens
+    timestamp.setHours(12);
+    if (date.split("/")[2]) {
+      if (date.split("/")[2].length == 2)
+        timestamp.setFullYear(2000 + date_nums[2]);
+      else timestamp.setFullYear(date_nums[2]);
+    }
+    const object = {
+      duration: Number(duration) || 60,
+      role:
+        selected_role == "Other" || organization_name == "custom"
+          ? other_role
+          : selected_role,
+      random_user_id: props.user!.random_id,
+      org_name: organization_name == "custom" ? custom_org_name : org?.name,
+      time: timestamp,
+    };
+    props.supabase
+      .from("experiences")
+      .insert(object)
+      .then((val) => {
+        if (val.status != 201) return alert("Database could not be updated");
+        else navigate(-1);
+      });
   };
   return (
     <>
       <TopNavBar title="Log Hours"></TopNavBar>
       <div className="page narrow-page" id="log_hours">
-        {org.name && <div>Log for {org.name}</div>}
-        {organization_name == "custom" && (
+        {org && org.name && <div>Log for {org.name}</div>}
+        {((!org) || organization_name == "custom") && (
           <input
             value={custom_org_name}
             onChange={(e) => setCustomOrgName(e.target.value)}
@@ -104,7 +89,7 @@ const LogHours: React.FC<{}> = () => {
         ></input>
         <h2>Select your role</h2>
         <div className="roles_list">
-          {org.roles.map((role: any) => {
+          {org && org.roles.map((role: any) => {
             return (
               <div key={role.name}>
                 <input

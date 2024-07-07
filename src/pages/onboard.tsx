@@ -1,13 +1,18 @@
-import { useSession } from "@clerk/clerk-react";
 import React, { useEffect, useState } from "react";
-import supabase from "../supabase";
 import { Link } from "react-router-dom";
 import { User, interests, skill_sets } from "../schema";
 import TopNavBar from "../components/top_nav_bar";
 import "../style/onboard.css";
+import { SupabaseClient } from "@supabase/supabase-js";
 
-const Onboard: React.FC<{}> = () => {
-  const clerk_session = useSession().session;
+interface Props {
+  supabase: SupabaseClient<any, "public", any>;
+  clerk_session: any;
+  user: User | null;
+  setUser: (usr: User) => void;
+}
+
+const Onboard: React.FC<Props> = (props: Props) => {
   const [my_interests, setMyInterests] = useState([] as string[]);
   const [my_skills, setMySkills] = useState([] as string[]);
   const [my_name, setMyName] = useState("");
@@ -15,62 +20,48 @@ const Onboard: React.FC<{}> = () => {
   const [is_update, setIsUpdate] = useState(false);
   let profile: User = {
     name: my_name,
-    random_id: Math.floor(Math.random() * 100000000),
-    saved: [],
+    random_id: props.user?.random_id || Math.floor(Math.random() * 100000000),
+    saved: props.user?.saved || [],
     interests: my_interests,
-    pfp: clerk_session?.user.hasImage ? clerk_session.user.imageUrl : undefined,
+    pfp: props.clerk_session?.user.hasImage
+      ? props.clerk_session.user.imageUrl
+      : undefined,
     skills: my_skills,
-    user_id: clerk_session?.user.id || "",
+    user_id: props.clerk_session?.user.id || "",
     description: my_bio,
   };
   useEffect(() => {
-    if (clerk_session) {
-      supabase(clerk_session).then((sup) =>
-        sup
-          .from("profiles")
-          .select()
-          .eq("user_id", clerk_session.user.id)
-          .then((data: { data: User[] | null }) => {
-            if (!data.data || data.data.length == 0) {
-              if (clerk_session.user.fullName) {
-                setMyName(clerk_session.user.fullName);
-              }
-              sup
-                .from("profiles")
-                .insert(profile)
-                .then(() => {
-                  console.log("Inserted new user");
-                });
-            } else if (data.data) {
-              setMyInterests(data.data[0].interests);
-              setMySkills(data.data[0].skills);
-              setMyName(data.data[0].name);
-              setMyBio(data.data[0].description || "");
+    if (props.clerk_session) {
+      props.supabase
+        .from("profiles")
+        .select()
+        .eq("user_id", props.clerk_session.user.id)
+        .then((data: { data: User[] | null }) => {
+          if (!data.data || data.data.length == 0) {
+            if (props.clerk_session.user.fullName) {
+              setMyName(props.clerk_session.user.fullName);
             }
-          })
-      );
+            props.supabase
+              .from("profiles")
+              .insert(profile)
+              .then(() => {
+                console.log("Inserted new user");
+              });
+          } else if (data.data) {
+            setMyInterests(data.data[0].interests);
+            setMySkills(data.data[0].skills);
+            setMyName(data.data[0].name);
+            setMyBio(data.data[0].description || "");
+          }
+        });
     }
-  }, [clerk_session]);
+  }, [props.clerk_session]);
   useEffect(() => {
     if (is_update) {
       setIsUpdate(false);
-      post_update();
+      props.setUser(profile);
     }
   }, [is_update]);
-  const post_update = async () => {
-    if (clerk_session) {
-      let sup = await supabase(clerk_session);
-      await sup
-        .from("profiles")
-        .update({
-          interests: my_interests,
-          name: my_name,
-          skills: my_skills,
-          description: my_bio,
-        })
-        .eq("user_id", clerk_session.user.id);
-    }
-  };
   return (
     <>
       <TopNavBar title="Edit profile"></TopNavBar>
@@ -156,7 +147,7 @@ const Onboard: React.FC<{}> = () => {
           </div>
         </div>
         <div className="onboard-centered">
-          <Link to="/home">
+          <Link to="/">
             <button>Start Exploring!</button>
           </Link>
         </div>
