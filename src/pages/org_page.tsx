@@ -4,12 +4,13 @@ import "../style/org_page.css";
 import { useSession } from "@clerk/clerk-react";
 import TopNavBar from "../components/top_nav_bar";
 import { Link } from "react-router-dom";
-import { Organization, Role } from "../schema";
+import { Organization, Role, User } from "../schema";
 import { SupabaseClient } from "@supabase/supabase-js";
 
 interface Props {
   supabase: SupabaseClient<any, "public", any>;
   clerk_session: any;
+  user: User | null;
   orgs: Organization[];
 }
 
@@ -21,7 +22,7 @@ const OrgPage: React.FC<Props> = (props: Props) => {
   return (
     org && (
       <div className="outer_page">
-        <TopNavBar title={org.name}></TopNavBar>
+        <TopNavBar user={props.user} title={org.name}></TopNavBar>
         <div className="page narrow-page">
           <div className="horizontal">
             {org.pfp && <img src={org.pfp} className="org_pfp" />}

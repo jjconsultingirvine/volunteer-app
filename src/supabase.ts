@@ -7,7 +7,7 @@ const default_supabase = () => {
   return createClient(URL, PUBLISHABLE_KEY);
 }
 
-const clerk_supabase = async (session: any) => {
+const clerk_supabase = (session: any) => {
   const client = createClient(URL, PUBLISHABLE_KEY,
     {
       auth: { persistSession: true, autoRefreshToken: true },
@@ -17,6 +17,7 @@ const clerk_supabase = async (session: any) => {
           const clerkToken = await session.getToken({
             template: "supabase",
           });
+          console.log("new token: ",clerkToken);
 
           // Construct fetch headers
           const headers = new Headers(options?.headers);

@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import { useSession } from "@clerk/clerk-react";
 import { clerk_supabase, default_supabase } from "./supabase";
@@ -18,26 +16,34 @@ function App() {
   const [orgs, setOrgs] = useState([] as Organization[]);
   const { session } = useSession();
   const setUser = (usr: User) => {
-    if(session) supabase.from("profiles").update(usr).eq("user_id",session.user.id).then(_=>_);
+    console.log("setting user", session?.user?.id);
+    if (session)
+      supabase
+        .from("profiles")
+        .update(usr)
+        .eq("user_id", session.user.id)
+        .then((_) => _);
     setUserState(usr as User | null);
-  }
+  };
 
   useEffect(() => {
     if (!session) return;
-    clerk_supabase(session).then((sup) => setSupabase(sup));
-  }, [session]);
+    console.log("Updating supabase");
+    setSupabase(clerk_supabase(session));
+  }, [session?.user.id]);
   useEffect(() => {
     supabase
       .from("organizations")
       .select()
       .then((orgs) => setOrgs(orgs.data!));
+    console.log(session?.user.id);
     if (session)
       supabase
         .from("profiles")
         .select()
         .eq("user_id", session.user.id)
-        .then((user) => setUser(user.data![0]));
-  }, [supabase]);
+        .then((user) => setUserState(user.data![0]));
+  }, [supabase, session]);
 
   const router = createBrowserRouter([
     {
@@ -59,6 +65,7 @@ function App() {
           clerk_session={session}
           orgs={orgs}
           supabase={supabase}
+          user={user}
         ></OrgPage>
       ),
     },
@@ -67,6 +74,7 @@ function App() {
       element: (
         <Profile
           clerk_session={session}
+          user={user}
           orgs={orgs}
           supabase={supabase}
         ></Profile>

@@ -48,7 +48,7 @@ const Home: React.FC<Props> = (props: Props) => {
 
   return (
     <div className="outer_page">
-      <TopNavBar title="Volunteer App"></TopNavBar>
+      <TopNavBar is_home user={props.user} title="Volunteer App"></TopNavBar>
       <div className="page">
         <div className="orgs_list">
           {saved_list.length != 0 && <h2>Saved</h2>}

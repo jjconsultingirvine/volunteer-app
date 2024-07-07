@@ -1,7 +1,6 @@
 .back_button {
     line-height: 1rem;
-    
-
+    color: #000;
 }
 .home_header {
     display: flex;
@@ -11,11 +10,16 @@
     font-size: 1.3rem;
 }
 .back_button:not(.cl-button) {
+    font-size: 1rem;
+    color: #000;
     background: #FFF;
     box-shadow: none;
     padding: 0.5rem;
     line-height:0;
     transition: box-shadow 0.4s ease;
+}
+.my_profile_button:not(.cl-button) {
+    font-size: 1.2rem;
 }
 .back_button:hover:not(.cl-button) {
     background: #F8F8F8;

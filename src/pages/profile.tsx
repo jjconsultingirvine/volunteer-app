@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import TopNavBar from "../components/top_nav_bar";
 import { Link } from "react-router-dom";
-import { Organization } from "../schema";
+import { Organization, User } from "../schema";
 import { SupabaseClient } from "@supabase/supabase-js";
 
 interface Props {
   supabase: SupabaseClient<any, "public", any>;
   clerk_session: any;
   orgs: Organization[];
+  user: User | null;
 }
 
 const Profile: React.FC<Props> = (props: Props) => {
@@ -16,16 +17,14 @@ const Profile: React.FC<Props> = (props: Props) => {
   const [data, setData] = useState(null as any);
   const [experiences, setExperiences] = useState([] as any[]);
   const orgs = props.orgs;
-  const [is_me, setIsMe] = useState(false);
+  const is_me = params.profile_id == props.user?.random_id;
   useEffect(() => {
     props.supabase
       .from("profiles")
       .select()
       .eq("random_id", params.profile_id)
       .then((data) => {
-        console.log(data);
         setData(data.data![0]);
-        if (data.data![0].user_id == props.clerk_session.user.id) setIsMe(true);
       });
     props.supabase
       .from("experiences")
@@ -40,7 +39,7 @@ const Profile: React.FC<Props> = (props: Props) => {
       .reduce((l, r) => l + r) / 60;
   return (
     <>
-      <TopNavBar title={data ? data.Name : ""}></TopNavBar>
+      <TopNavBar user={props.user} title={data ? data.name : ""}></TopNavBar>
       <div className="page">
         {data && (
           <>
@@ -66,8 +65,8 @@ const Profile: React.FC<Props> = (props: Props) => {
                 </strong>{" "}
                 volunteering!
               </p>
-              <div>Interests: {data.interests.replace(/,/g, ", ")}</div>
-              <div>Skills: {data.skills.replace(/,/g, ", ")}</div>
+              <div>Interests: {data.interests.join(", ")}</div>
+              <div>Skills: {data.skills.join(", ")}</div>
             </div>
             <h2>Volunteer History</h2>
             <div className="experiences_list">

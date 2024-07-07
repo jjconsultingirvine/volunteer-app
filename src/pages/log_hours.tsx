@@ -66,7 +66,7 @@ const LogHours: React.FC<Props> = (props: Props) => {
   };
   return (
     <>
-      <TopNavBar title="Log Hours"></TopNavBar>
+      <TopNavBar user={props.user} title="Log Hours"></TopNavBar>
       <div className="page narrow-page" id="log_hours">
         {org && org.name && <div>Log for {org.name}</div>}
         {((!org) || organization_name == "custom") && (

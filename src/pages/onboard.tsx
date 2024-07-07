@@ -44,7 +44,8 @@ const Onboard: React.FC<Props> = (props: Props) => {
             props.supabase
               .from("profiles")
               .insert(profile)
-              .then(() => {
+              .then((val) => {
+                console.log(val);
                 console.log("Inserted new user");
               });
           } else if (data.data) {
@@ -55,7 +56,7 @@ const Onboard: React.FC<Props> = (props: Props) => {
           }
         });
     }
-  }, [props.clerk_session]);
+  }, [props.clerk_session, props.supabase]);
   useEffect(() => {
     if (is_update) {
       setIsUpdate(false);
@@ -64,7 +65,7 @@ const Onboard: React.FC<Props> = (props: Props) => {
   }, [is_update]);
   return (
     <>
-      <TopNavBar title="Edit profile"></TopNavBar>
+      <TopNavBar user={props.user} title="Edit profile"></TopNavBar>
       <div className="page">
         <div className="onboard-centered">
           <h2>Welcome!</h2>
