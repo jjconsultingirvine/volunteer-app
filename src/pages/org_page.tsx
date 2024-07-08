@@ -30,7 +30,7 @@ const OrgPage: React.FC<Props> = (props: Props) => {
           </div>
           <div className="org_interest">
             Organization Interest:{" "}
-            <Link to={"/search/" + encodeURIComponent(org.interest)}>
+            <Link to={"/search/?query=" + encodeURIComponent(org.interest)}>
               {org.interest}
             </Link>
           </div>

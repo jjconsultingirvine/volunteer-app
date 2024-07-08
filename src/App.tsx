@@ -15,6 +15,7 @@ function App() {
   const [supabase, setSupabase] = useState(() => default_supabase());
   const [user, setUserState] = useState(null as User | null);
   const [orgs, setOrgs] = useState([] as Organization[]);
+  const [myExperiences, setMyExperiences] = useState([] as Experience[]);
   const { session } = useSession();
   const setUser = (usr: User) => {
     console.log("setting user", session?.user?.id);
@@ -37,7 +38,6 @@ function App() {
       .from("organizations")
       .select()
       .then((orgs) => setOrgs(orgs.data!));
-    console.log(session?.user.id);
     if (session)
       supabase
         .from("profiles")
@@ -45,6 +45,13 @@ function App() {
         .eq("user_id", session.user.id)
         .then((user) => setUserState(user.data![0]));
   }, [supabase, session]);
+  useEffect(() => {
+    if(session) supabase
+      .from("experiences")
+      .select()
+      .eq("random_user_id", user?.random_id)
+      .then((exps) => {if(exps.data) setMyExperiences(exps.data!)});
+  }, [user]);
 
   const router = createBrowserRouter([
     {
@@ -56,6 +63,7 @@ function App() {
           user={user}
           setUser={setUser}
           supabase={supabase}
+          experiences={myExperiences}
         ></Home>
       ),
     },

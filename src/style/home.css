@@ -3,10 +3,12 @@
     flex-direction: column;
     width: 20rem;  
     min-width: 20rem; 
-    background: #f8f8f8;
+    background: #fff;
     border-radius: 1rem;
     padding: 1rem;
     box-shadow: 1px 1px 7px 0px rgba(0,0,0,0.2);
+    justify-content: space-between;
+    gap: 0.5rem;
 }
 .org_pfp {
     width: 5rem;
@@ -16,8 +18,11 @@
     box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.3);
 }
 .org_name {
-    font-size: 1.7rem;
+    font-size: 1.5rem;
     font-weight: bold;
+}
+.org_short_desc {
+    line-height: 1.1em;
 }
 .org_listing > div {
     display: flex;
@@ -38,13 +43,38 @@
 .toggle_save {
     margin-right: 0.5rem;
 }
-.toggle_save:not(.cl-button), .log_hours_btn:not(.cl-button) {
+.external_log:not(.cl-button), .toggle_save:not(.cl-button), .log_hours_btn:not(.cl-button) {
     background: #EEE;
     color: #000;
 }
-.toggle_save:hover:not(.cl-button), .log_hours_btn:hover:not(.cl-button) {
+.external_log:not(.cl-button):hover, .toggle_save:hover:not(.cl-button), .log_hours_btn:hover:not(.cl-button) {
     background: #DDD;
 }
 .org_listing button {
     font-weight: bold;
+}
+.home_buttons {
+    max-width: 30rem;
+}
+.home_buttons button {
+    font-size: 1.1rem;
+    font-weight: bold;
+    width: 100%;
+}
+.home_buttons > .horizontal {
+    width: 100%;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+.home_buttons > .horizontal > * {
+    width: 100%;
+    display: block;
+}
+#home.page {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.profile_info h2 {
+    margin: 0;
 }
