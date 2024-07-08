@@ -90,10 +90,9 @@ const Onboard: React.FC<Props> = (props: Props) => {
               setIsUpdate(true);
             }}
           ></input>
-        </div>
-        <div className="horizontal-maybe">
+        <div className="horizontal-wrap">
           <div>
-            <p>Select areas of interest</p>
+            <strong>Select areas of interest</strong>
             {interests.map((interest) => {
               return (
                 <div key={interest.replace(/ /g, "")}>
@@ -121,7 +120,7 @@ const Onboard: React.FC<Props> = (props: Props) => {
             })}
           </div>
           <div>
-            <p>Now select your skills</p>
+            <strong>Now select your skills</strong>
             {skill_sets.map((skill) => {
               return (
                 <div key={skill.replace(/ /g, "")}>
@@ -147,7 +146,6 @@ const Onboard: React.FC<Props> = (props: Props) => {
             })}
           </div>
         </div>
-        <div className="onboard-centered">
           <Link to="/">
             <button>Start Exploring!</button>
           </Link>

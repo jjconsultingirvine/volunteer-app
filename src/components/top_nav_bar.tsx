@@ -34,11 +34,6 @@ const TopNavBar: React.FC<Props> = (props: Props) => {
           </svg>
         </button>
       )}
-      {props.is_home && props.user && (
-        <Link to={"/profile/" + props.user.random_id}>
-          <button className="my_profile_button">My Profile</button>
-        </Link>
-      )}
       <div>{props.title}</div>
       <SignedOut>
         <SignInButton signUpForceRedirectUrl="/onboard"/>

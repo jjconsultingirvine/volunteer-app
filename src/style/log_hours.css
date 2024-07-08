@@ -31,11 +31,11 @@ input.input_invalid {
     outline: red solid 0.2rem;
 }
 button.input_invalid {
-    background: #EEE;
+    background: #e8e8e8;
     color: #000;
 }
 button.input_invalid:hover {
-    background: #eee;
+    background: #e8e8e8;
     cursor: inherit;
 }
 .error_message {

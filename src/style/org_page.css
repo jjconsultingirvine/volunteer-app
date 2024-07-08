@@ -35,12 +35,12 @@
     margin-top: 1rem;
     font-weight: bold;
     font-size: 1.2rem;
-    background: #DDD;
+    background: #fff;
     color: #000;
     transition: box-shadow 0.3s ease;
 }
 .org_log_hours > a > button:hover {
     box-shadow: 1px 1px 8px 0 rgba(0,0,0,0.2);
-    background: #DDD;
+    background: #fff;
 
 }

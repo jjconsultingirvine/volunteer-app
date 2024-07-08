@@ -87,8 +87,8 @@ const Search: React.FC<Props> = (props: Props) => {
           ></input>
         </div>
         <div className="orgs_list">
-          {results.length == 0 && <p>No results found.</p>}
-          {results.length != 0 && query.length < 3 && <p>Query too short.</p>}
+          {results.length == 0 && <strong>No results found.</strong>}
+          {results.length != 0 && query.length < 3 && <strong>Query too short.</strong>}
           {results.length != 0 &&
             query.length >= 3 &&
             results.map(({ org }) => {

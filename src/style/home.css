@@ -15,7 +15,8 @@
     height: 5rem;
     object-fit: cover;
     border-radius: 35%;   
-    box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.3);
+    padding: 0.2rem;
+    outline: 0.15rem solid #aaa;
 }
 .org_name {
     font-size: 1.5rem;
@@ -74,6 +75,13 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+}
+.horizontal-wrap {
+    
+    border-radius: 1rem;
+    padding: 1rem;
+    background: #fff;
+    box-shadow: 1px 1px 7px 0px rgba(0,0,0,0.2);
 }
 .profile_info h2 {
     margin: 0;
