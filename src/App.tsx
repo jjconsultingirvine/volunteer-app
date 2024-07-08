@@ -8,7 +8,8 @@ import OrgPage from "./pages/org_page";
 import Profile from "./pages/profile";
 import Onboard from "./pages/onboard";
 import LogHours from "./pages/log_hours";
-import { Organization, User } from "./schema";
+import { Experience, Organization, User } from "./schema";
+import Search from "./pages/search";
 
 function App() {
   const [supabase, setSupabase] = useState(() => default_supabase());
@@ -56,6 +57,18 @@ function App() {
           setUser={setUser}
           supabase={supabase}
         ></Home>
+      ),
+    },
+    {
+      path: "/search",
+      element: (
+        <Search
+          clerk_session={session}
+          orgs={orgs}
+          user={user}
+          setUser={setUser}
+          supabase={supabase}
+        ></Search>
       ),
     },
     {

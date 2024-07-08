@@ -1,0 +1,15 @@
+.search_bar {
+    border-radius: 0.3rem;
+    margin-bottom: 2rem;
+    font-size: 1.4rem;
+    width: 100%;
+    display: block;
+    outline: 0.1rem #333 solid;
+    border: none;
+    padding: 0.2rem;
+    transition: outline-width 0.3s ease-in-out;
+    max-width: 30rem;
+}
+.search_bar:focus {
+    outline: 0.2rem #0060df solid;
+}
