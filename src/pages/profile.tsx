@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 import { Organization, User } from "../schema";
 import { SupabaseClient } from "@supabase/supabase-js";
 
+import "../style/profile.css";
+import VolunteerTable from "../components/volunteer_table";
+
 interface Props {
   supabase: SupabaseClient<any, "public", any>;
   clerk_session: any;
@@ -32,42 +35,32 @@ const Profile: React.FC<Props> = (props: Props) => {
       .eq("random_user_id", params.profile_id)
       .then((exps) => setExperiences(exps.data!));
   }, [props.supabase]);
-  const volunteer_time =
-    experiences
-      .map((val) => val.duration || 0)
-      .concat(0)
-      .reduce((l, r) => l + r) / 60;
   return (
     <>
       <TopNavBar user={props.user} title={data ? data.name : ""}></TopNavBar>
-      <div className="page">
+      <div id="profile" className="page">
         {data && (
           <>
-            <div className="horizontal">
-              <img
-                className="org_pfp"
-                src={
-                  data.pfp ||
-                  "https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
-                }
-              ></img>
-              <div className="org_page_short_desc">
-                {data.description || "User on {app name}"}
+            <div className="user_info">
+              <div className="horizontal">
+                <img
+                  className="org_pfp"
+                  src={
+                    data.pfp ||
+                    "https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
+                  }
+                ></img>
+                <div className="org_page_short_desc">
+                  {data.description || "User on {app name}"}
+                </div>
+              </div>
+              {is_me ? <Link to="/onboard">Edit profile</Link> : ""}
+              <div className="profile_summary">
+                <div><strong>Interests:</strong> {data.interests.join(", ")}</div>
+                <div><strong>Skills:</strong> {data.skills.join(", ")}</div>
               </div>
             </div>
-            {is_me ? <Link to="/onboard">Edit profile</Link> : ""}
-            <div className="profile_summary">
-              <p>
-                {data ? data.Name : ""} has spent{" "}
-                <strong>
-                  {volunteer_time.toFixed(1)} hour
-                  {volunteer_time == 1 ? "" : "s"}
-                </strong>{" "}
-                volunteering!
-              </p>
-              <div>Interests: {data.interests.join(", ")}</div>
-              <div>Skills: {data.skills.join(", ")}</div>
-            </div>
+            {experiences.length != 0 && <VolunteerTable exps={experiences}></VolunteerTable>}
             <h2>Volunteer History</h2>
             <div className="experiences_list">
               {experiences
@@ -87,15 +80,13 @@ const Profile: React.FC<Props> = (props: Props) => {
                     <div className="experience" key={exp.id}>
                       <div className="experience_org_name">
                         {org_link}
-                        {exp.role ? " - " : ""}
-                        {exp.role}
                       </div>
                       <div className="experience_role">{exp.role}</div>
                       <div className="exp_date">
-                        On {exp.time.split("T")[0]}
+                        On {exp.time.split("T")[0].split("-").reverse().join("/")}
                       </div>
                       <div className="exp_dur">
-                        For {dur.toFixed(1)} hour{dur == 1 ? "" : "s"}
+                        For {dur.toFixed(1).replace(".0","")} hour{dur == 1 ? "" : "s"}
                       </div>
                     </div>
                   );

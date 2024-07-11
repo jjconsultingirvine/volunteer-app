@@ -1,0 +1,61 @@
+#profile.page {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+.user_info {
+    background: #FFF;
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: 1px 1px 7px 0px rgba(0,0,0,0.2);
+}
+.experiences_list {
+    gap: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: center;
+}
+.experience {
+    background: #FFF;
+    padding: 1rem;
+    min-width: 12rem;
+    border-radius: 1rem;
+    box-shadow: 1px 1px 7px 0px rgba(0,0,0,0.1);
+}
+.experience_org_name {
+    font-size: 1.2em;
+}
+.profile_table {
+    display: grid;
+    margin-top: 1rem;
+    background: #FFF;
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: 1px 1px 7px 0px rgba(0,0,0,0.1);
+    grid-gap: 0.1rem;
+}
+.table_cell_filled {
+    background: #ddd;
+}
+.profile_table div {
+    padding: 0.4rem;
+    box-shadow: 0 0 0 0.1rem #000;
+    min-width: 3.5rem;
+    min-height: 2rem;
+    display: inline-block;
+
+}
+.table_month {
+    font-weight: bold;
+}
+.table_year {
+    font-weight: bold;
+}
+.award_progress {
+}
+.award_symbol {
+    width: 20rem;
+    height: 20rem;
+    display: inline-block;
+}
