@@ -49,6 +49,7 @@ const Home: React.FC<Props> = (props: Props) => {
   });
   const volunteer_time =
     props.experiences
+      .filter(exp=>exp.count_towards_award)
       .map((val) => val.duration || 0)
       .concat(0)
       .reduce((l, r) => l + r) / 60;

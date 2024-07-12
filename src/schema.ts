@@ -32,6 +32,7 @@ interface User {
     saved: string[]
     pfp?: string
     description?: string
+    award_id?: number
 }
 
 interface Experience {
@@ -40,6 +41,7 @@ interface Experience {
     random_user_id: number
     org_name: string
     time: Date
+    count_towards_award: boolean
 }
 
 interface Role {

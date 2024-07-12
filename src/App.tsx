@@ -121,6 +121,8 @@ function App() {
           supabase={supabase}
           user={user}
           setUser={setUser}
+          myExperiences={myExperiences}
+          setMyExperiences={setMyExperiences}
         ></LogHours>
       ),
     },

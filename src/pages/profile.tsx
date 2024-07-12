@@ -6,7 +6,7 @@ import { Organization, User } from "../schema";
 import { SupabaseClient } from "@supabase/supabase-js";
 
 import "../style/profile.css";
-import VolunteerTable from "../components/volunteer_table";
+import VolunteerSummary from "../components/volunteer_summary";
 
 interface Props {
   supabase: SupabaseClient<any, "public", any>;
@@ -60,7 +60,7 @@ const Profile: React.FC<Props> = (props: Props) => {
                 <div><strong>Skills:</strong> {data.skills.join(", ")}</div>
               </div>
             </div>
-            {experiences.length != 0 && <VolunteerTable exps={experiences}></VolunteerTable>}
+            {experiences.length != 0 && <VolunteerSummary exps={experiences} award_id={props.user?.award_id}></VolunteerSummary>}
             <h2>Volunteer History</h2>
             <div className="experiences_list">
               {experiences
@@ -76,6 +76,7 @@ const Profile: React.FC<Props> = (props: Props) => {
                         {exp.org_name}
                       </Link>
                     );
+                  let [year,month,day] = exp.time.split("T")[0].split("-");
                   return (
                     <div className="experience" key={exp.id}>
                       <div className="experience_org_name">
@@ -83,11 +84,13 @@ const Profile: React.FC<Props> = (props: Props) => {
                       </div>
                       <div className="experience_role">{exp.role}</div>
                       <div className="exp_date">
-                        On {exp.time.split("T")[0].split("-").reverse().join("/")}
+                        On {[month,day,year].join("/")}
                       </div>
                       <div className="exp_dur">
                         For {dur.toFixed(1).replace(".0","")} hour{dur == 1 ? "" : "s"}
                       </div>
+                      {!exp.count_towards_award && 
+                      <div className="cong_award_count">Not included in totals</div>}
                     </div>
                   );
                 })}

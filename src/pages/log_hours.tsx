@@ -3,7 +3,7 @@ import TopNavBar from "../components/top_nav_bar";
 import { useState } from "react";
 
 import "../style/log_hours.css";
-import { Organization, User } from "../schema";
+import { Experience, Organization, User } from "../schema";
 import { SupabaseClient } from "@supabase/supabase-js";
 
 interface Props {
@@ -12,6 +12,8 @@ interface Props {
   user: User | null;
   orgs: Organization[];
   setUser: (usr: User) => void;
+  myExperiences: Experience[];
+  setMyExperiences: (data: Experience[]) => void;
 }
 
 const LogHours: React.FC<Props> = (props: Props) => {
@@ -23,10 +25,13 @@ const LogHours: React.FC<Props> = (props: Props) => {
     }`
   );
   const [selected_role, setRole] = useState("Other");
-  const org: Organization | null = props.orgs.filter((org) => org.url_name == organization_name)[0];
+  const org: Organization | null = props.orgs.filter(
+    (org) => org.url_name == organization_name
+  )[0];
   const [other_role, setOtherRole] = useState("");
   const [custom_org_name, setCustomOrgName] = useState("");
   const [duration, setDuration] = useState("");
+  const [count_towards_award, setCountTowardsAward] = useState(true);
   const validDate =
     date.match(
       /^([01]{0,1})([0123456789]{1})\/([0123]{0,1})([0123456789]{1})(\/[0123456789]{2,4}){0,1}$/
@@ -55,6 +60,7 @@ const LogHours: React.FC<Props> = (props: Props) => {
       random_user_id: props.user!.random_id,
       org_name: organization_name == "custom" ? custom_org_name : org?.name,
       time: timestamp,
+      count_towards_award,
     };
     props.supabase
       .from("experiences")
@@ -63,13 +69,14 @@ const LogHours: React.FC<Props> = (props: Props) => {
         if (val.status != 201) return alert("Database could not be updated");
         else navigate(-1);
       });
+    props.setMyExperiences(props.myExperiences.concat(object));
   };
   return (
     <>
       <TopNavBar user={props.user} title="Log Hours"></TopNavBar>
       <div className="page narrow-page" id="log_hours">
         {org && org.name && <div>Log for {org.name}</div>}
-        {((!org) || organization_name == "custom") && (
+        {(!org || organization_name == "custom") && (
           <input
             value={custom_org_name}
             onChange={(e) => setCustomOrgName(e.target.value)}
@@ -89,19 +96,22 @@ const LogHours: React.FC<Props> = (props: Props) => {
         ></input>
         <h2>Select your role</h2>
         <div className="roles_list">
-          {org && org.roles.map((role: any) => {
-            return (
-              <div key={role.name}>
-                <input
-                  type="radio"
-                  id={role.name.replace(/ /g, "")}
-                  checked={selected_role == role.name}
-                  onChange={() => setRole(role.name)}
-                ></input>
-                <label htmlFor={role.name.replace(/ /g, "")}>{role.name}</label>
-              </div>
-            );
-          })}
+          {org &&
+            org.roles.map((role: any) => {
+              return (
+                <div key={role.name}>
+                  <input
+                    type="radio"
+                    id={role.name.replace(/ /g, "")}
+                    checked={selected_role == role.name}
+                    onChange={() => setRole(role.name)}
+                  ></input>
+                  <label htmlFor={role.name.replace(/ /g, "")}>
+                    {role.name}
+                  </label>
+                </div>
+              );
+            })}
           {organization_name != "custom" && (
             <div>
               <input
@@ -134,6 +144,15 @@ const LogHours: React.FC<Props> = (props: Props) => {
             placeholder={"60"}
           ></input>
           <span>minutes</span>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            checked={count_towards_award}
+            onChange={(e) => setCountTowardsAward(e.target.checked)}
+            id="count_exp"
+          ></input>
+          <label htmlFor="count_exp">Include in totals</label>
         </div>
         <button
           onClick={submit}

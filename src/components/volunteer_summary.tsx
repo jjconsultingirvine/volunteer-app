@@ -4,6 +4,7 @@ import AwardProgress from "./award_progress";
 
 interface Props {
   exps: Experience[];
+  award_id?: number;
 }
 const MONTH_NAMES = [
   "Jan",
@@ -20,10 +21,10 @@ const MONTH_NAMES = [
   "Dec",
 ];
 
-const VolunteerTable: React.FC<Props> = (props: Props) => {
+const VolunteerSummary: React.FC<Props> = (props: Props) => {
   // Sort experiences by year and month
   let binned: { [id: string]: number[] } = {};
-  props.exps.forEach((exp) => {
+  props.exps.filter(exp=>exp.count_towards_award).forEach((exp) => {
     const year = (exp.time as any as string).split("-")[0];
     const month = Number((exp.time as any as string).split("-")[1]) - 1;
     if (!binned[year]) binned[year] = new Array(12).fill(0);
@@ -31,6 +32,7 @@ const VolunteerTable: React.FC<Props> = (props: Props) => {
   });
   const volunteer_time =
     props.exps
+      .filter(exp=>exp.count_towards_award)
       .map((val) => val.duration || 0)
       .concat(0)
       .reduce((l, r) => l + r) / 60;
@@ -39,7 +41,7 @@ const VolunteerTable: React.FC<Props> = (props: Props) => {
     years.push(year);
   }
   years.sort();
-  while (years.length < 5) {
+  while (years.length < 4) {
     years.push((Number(years[years.length - 1]) + 1).toString());
   }
   // Cast each element to a string
@@ -88,19 +90,9 @@ const VolunteerTable: React.FC<Props> = (props: Props) => {
     });
   }
   return (
-    <div className="volunteer_summary">
-      <div className="hours_summary">
-        Has spent{" "}
-        <strong>
-          {volunteer_time.toFixed(1)} hour
-          {volunteer_time == 1 ? "" : "s"}
-        </strong>{" "}
-        volunteering!
-      </div>
-      <div className="months_summary">
-        Has across <strong>{months_worked}</strong> different months
-      </div>
-      <AwardProgress color="#CD7F32" alt_color="#BC7F62" months={months_worked} month_goal={4} time={volunteer_time} time_goal={5} name="Bronze Certificate"></AwardProgress>
+    <div className="volunteer_summary horizontal-maybe" style={{alignItems: "center"}}>
+      {props.award_id != null && 
+      <AwardProgress award_id={props.award_id} months={months_worked} time={volunteer_time}></AwardProgress>}
       <div
         className="profile_table"
         style={{ gridTemplateColumns: "repeat(" + cells[0].length + ",1fr" }}
@@ -111,4 +103,4 @@ const VolunteerTable: React.FC<Props> = (props: Props) => {
   );
 };
 
-export default VolunteerTable;
+export default VolunteerSummary;
