@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import TopNavBar from "../components/top_nav_bar";
 import { Link } from "react-router-dom";
-import { Organization, User } from "../schema";
+import { Experience, Organization, User } from "../schema";
 import { SupabaseClient } from "@supabase/supabase-js";
 
 import "../style/profile.css";
 import VolunteerSummary from "../components/volunteer_summary";
+import ThreeDots from "../components/three_dots";
 
 interface Props {
   supabase: SupabaseClient<any, "public", any>;
@@ -18,7 +19,7 @@ interface Props {
 const Profile: React.FC<Props> = (props: Props) => {
   const params = useParams();
   const [data, setData] = useState(null as any);
-  const [experiences, setExperiences] = useState([] as any[]);
+  const [experiences, setExperiences] = useState([] as Experience[]);
   const orgs = props.orgs;
   const is_me = params.profile_id == props.user?.random_id;
   useEffect(() => {
@@ -65,7 +66,7 @@ const Profile: React.FC<Props> = (props: Props) => {
             <div className="experiences_list">
               {experiences
                 .sort((a, b) => (b.time < a.time ? -1 : 1))
-                .map((exp) => {
+                .map((exp,id) => {
                   let dur = exp.duration / 60;
                   let matches = orgs.filter((n) => n.name == exp.org_name);
                   let org_link =
@@ -76,9 +77,19 @@ const Profile: React.FC<Props> = (props: Props) => {
                         {exp.org_name}
                       </Link>
                     );
-                  let [year,month,day] = exp.time.split("T")[0].split("-");
+                  let [year,month,day] = (exp.time as any as string).split("T")[0].split("-");
                   return (
-                    <div className="experience" key={exp.id}>
+                    <div className="experience" key={(exp as any).id}>
+                      {is_me && <ThreeDots style={{width: "1rem", height: "1rem"}} actions={[["Toggle in totals",()=>{
+                        let new_experiences = experiences.slice();
+                        let old = experiences[id].count_towards_award;
+                        new_experiences[id].count_towards_award = !old;
+                        props.supabase.from("experiences").update({count_towards_award: !old}).eq("id",(experiences[id] as any).id).then(val=>console.log(val))
+                      }],["Delete",()=>{
+                        let entry_id = (experiences[id] as any).id;
+                        props.supabase.from("experiences").delete()
+
+                      }]]}></ThreeDots>}
                       <div className="experience_org_name">
                         {org_link}
                       </div>
