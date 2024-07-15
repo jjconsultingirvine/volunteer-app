@@ -98,7 +98,7 @@ const Onboard: React.FC<Props> = (props: Props) => {
               setIsUpdate(true);
             }}
           ></input>
-          <div className="horizontal-wrap">
+          <div className="horizontal-wrap panel">
             <div>
               <strong>Select areas of interest</strong>
               {interests.map((interest) => {
@@ -154,7 +154,7 @@ const Onboard: React.FC<Props> = (props: Props) => {
               })}
             </div>
           </div>
-          <div className="horizontal-wrap">
+          <div className="panel" style={{textAlign: "left"}}>
             <div>
               Which Congressional Award are you working towards?
               {CONG_AWARD_NAMES.map((name, id) => (
