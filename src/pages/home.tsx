@@ -17,6 +17,7 @@ interface Props {
 }
 
 const Home: React.FC<Props> = (props: Props) => {
+  console.log("home page");
   const toggle_save = (name: string) => {
     if (!props.user) return;
     let new_saved = props.user.saved.slice();

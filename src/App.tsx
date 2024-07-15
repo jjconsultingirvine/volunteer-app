@@ -56,7 +56,7 @@ function App() {
 
   const router = createBrowserRouter([
     {
-      path: "/",
+      path: "/volunteer-app",
       element: (
         <Home
           clerk_session={session}
@@ -69,7 +69,7 @@ function App() {
       ),
     },
     {
-      path: "/search",
+      path: "/volunteer-app/search",
       element: (
         <Search
           clerk_session={session}
@@ -81,7 +81,7 @@ function App() {
       ),
     },
     {
-      path: "/org/:org_id",
+      path: "/volunteer-app/org/:org_id",
       element: (
         <OrgPage
           clerk_session={session}
@@ -92,7 +92,7 @@ function App() {
       ),
     },
     {
-      path: "/profile/:profile_id",
+      path: "/volunteer-app/profile/:profile_id",
       element: (
         <Profile
           clerk_session={session}
@@ -103,7 +103,7 @@ function App() {
       ),
     },
     {
-      path: "/onboard",
+      path: "/volunteer-app/onboard",
       element: (
         <Onboard
           clerk_session={session}
@@ -114,7 +114,7 @@ function App() {
       ),
     },
     {
-      path: "/log/:organization_name",
+      path: "/volunteer-app/log/:organization_name",
       element: (
         <LogHours
           clerk_session={session}
@@ -128,7 +128,7 @@ function App() {
       ),
     },
     {
-      path: "/congressional_award",
+      path: "/volunteer-app/congressional_award",
       element: (
         <CongressionalAward
           clerk_session={session}
