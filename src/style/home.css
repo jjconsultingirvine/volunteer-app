@@ -55,7 +55,10 @@
     font-weight: bold;
 }
 .home_buttons {
-    max-width: 30rem;
+    max-width: 20rem ;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 .home_buttons button {
     font-size: 1.1rem;
@@ -65,7 +68,6 @@
 .home_buttons > .horizontal {
     width: 100%;
     gap: 0.5rem;
-    margin-bottom: 0.5rem;
 }
 .home_buttons > .horizontal > * {
     width: 100%;
@@ -76,12 +78,10 @@
     align-items: center;
     flex-direction: column;
 }
-.horizontal-wrap {
-    
-    border-radius: 1rem;
-    padding: 1rem;
-    background: #fff;
-    box-shadow: 1px 1px 7px 0px rgba(0,0,0,0.2);
+#home .horizontal-wrap {
+    justify-content: center;
+    align-items: center;
+
 }
 .profile_info h2 {
     margin: 0;

@@ -60,7 +60,7 @@ const Home: React.FC<Props> = (props: Props) => {
     <>
       <TopNavBar is_home user={props.user} title="Volunteer App"></TopNavBar>
       <div className="page" id="home">
-        <div className="horizontal-wrap">
+        <div className="horizontal-wrap panel">
           <div className="profile_info">
             <h2>
               Welcome{props.user ? ", " + props.user.name.split(" ")[0] : ""}!
@@ -82,6 +82,10 @@ const Home: React.FC<Props> = (props: Props) => {
                 </Link>
               )}
             </div>
+            {props.user && props.user.award_id != undefined && 
+            <Link to="/congressional_award">
+              <button>Congressional Award</button>
+            </Link>}
             <Link to="/log/custom">
               <button className="external_log">
                 Log with external organization
