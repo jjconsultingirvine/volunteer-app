@@ -5,6 +5,7 @@ import OrgListing from "../components/org_listing";
 import { Experience, Organization, User } from "../schema";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { Link } from "react-router-dom";
+import { hours_text } from "../helpers";
 
 interface Props {
   supabase: SupabaseClient<any, "public", any>;
@@ -47,30 +48,46 @@ const Home: React.FC<Props> = (props: Props) => {
       recommended_list.push(org);
     else unsaved_list.push(org);
   });
-  const volunteer_time =
+  const volunteer_time = hours_text(
     props.experiences
-      .filter(exp=>exp.count_towards_award)
+      .filter((exp) => exp.count_towards_award)
       .map((val) => val.duration || 0)
       .concat(0)
-      .reduce((l, r) => l + r) / 60;
+      .reduce((l, r) => l + r)
+  );
 
   return (
     <>
       <TopNavBar is_home user={props.user} title="Volunteer App"></TopNavBar>
       <div className="page" id="home">
         <div className="horizontal-wrap">
-        <div className="profile_info">
-        <h2>Welcome{props.user ? ", "+props.user.name.split(" ")[0] : ""}!</h2>
-            {props.user && <p>You have spent <strong>{volunteer_time.toFixed(1)} hours</strong> volunteering</p>}
-        
-        
-        </div>
-        <div className="home_buttons">
-        <div className="horizontal">
-        <Link to="/search"><button>Search</button></Link>{props.user && <Link to={"/profile/"+props.user?.random_id}><button>My Profile</button></Link>}
-        </div>
-        <Link to="/log/custom"><button className="external_log">Log with external organization</button></Link>
-        </div>
+          <div className="profile_info">
+            <h2>
+              Welcome{props.user ? ", " + props.user.name.split(" ")[0] : ""}!
+            </h2>
+            {props.user && (
+              <p>
+                You have spent <strong>{volunteer_time}</strong> volunteering
+              </p>
+            )}
+          </div>
+          <div className="home_buttons">
+            <div className="horizontal">
+              <Link to="/search">
+                <button>Search</button>
+              </Link>
+              {props.user && (
+                <Link to={"/profile/" + props.user?.random_id}>
+                  <button>My Profile</button>
+                </Link>
+              )}
+            </div>
+            <Link to="/log/custom">
+              <button className="external_log">
+                Log with external organization
+              </button>
+            </Link>
+          </div>
         </div>
         <div className="orgs_list">
           {saved_list.length != 0 && <h2>Saved</h2>}
@@ -108,7 +125,7 @@ const Home: React.FC<Props> = (props: Props) => {
           </div>
         </div>
       </div>
-      </>
+    </>
   );
 };
 export default Home;

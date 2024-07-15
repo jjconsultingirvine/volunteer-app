@@ -10,6 +10,7 @@ import Onboard from "./pages/onboard";
 import LogHours from "./pages/log_hours";
 import { Experience, Organization, User } from "./schema";
 import Search from "./pages/search";
+import CongressionalAward from "./pages/congressional_award";
 
 function App() {
   const [supabase, setSupabase] = useState(() => default_supabase());
@@ -124,6 +125,18 @@ function App() {
           myExperiences={myExperiences}
           setMyExperiences={setMyExperiences}
         ></LogHours>
+      ),
+    },
+    {
+      path: "/congressional_award",
+      element: (
+        <CongressionalAward
+          clerk_session={session}
+          supabase={supabase}
+          user={user}
+          experiences={myExperiences}
+          setMyExperiences={setMyExperiences}
+        ></CongressionalAward>
       ),
     },
   ]);

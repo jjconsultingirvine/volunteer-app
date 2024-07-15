@@ -1,0 +1,70 @@
+optgroup {
+  font-family: "Lato";
+}
+#cong_award.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+select.unset {
+  outline: red 0.1rem solid;
+}
+.quick_set {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+}
+.cong_award_exp_list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 50rem;
+  gap: 1rem;
+  align-items: stretch;
+  justify-content: center;
+}
+button.email_add_btn {
+  border-radius: 0 0.8rem 0.8rem 0;
+}
+button.email_add_btn.invalid, button.email_add_btn.invalid:hover {
+  pointer-events: none;
+  background-color: #555
+}
+.new_contact_div {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 3rem;
+  justify-content: stretch;
+}
+.new_contact_div .my_input {
+  outline: none;
+  border-top: 0.1rem #333 solid;
+  border-left: 0.1rem #333 solid;
+  border-bottom: 0.1rem #333 solid;
+  border-radius: 0.8rem 0 0 0.8rem;
+}
+.emails.panel {
+  margin-top: 1rem;
+
+}
+.email_template {
+  background: #fff;
+  padding: 1rem;
+}
+.email_template > p {
+  padding: 0;
+  margin: 0;
+}
+.emails.panel > h2 {
+  margin-left: 1rem;
+}
+.email_template {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  border-top: solid 2px #222;
+}
+.email_list {
+  display: flex;
+  flex-direction: column;
+}

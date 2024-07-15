@@ -42,6 +42,7 @@ interface Experience {
     org_name: string
     time: Date
     count_towards_award: boolean
+    contact?: string
 }
 
 interface Role {
