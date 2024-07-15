@@ -8,7 +8,6 @@ import React from "react";
 import { useNavigate } from "react-router";
 import "../style/components.css";
 import { User } from "../schema";
-import { Link } from "react-router-dom";
 
 interface Props {
   title: string;

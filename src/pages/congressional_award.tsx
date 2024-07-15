@@ -249,7 +249,7 @@ const CongressionalAward: React.FC<Props> = (props: Props) => {
                       })}
                   </div>
                   </div>
-                  <button onClick={e=>window.navigator.clipboard.writeText((document.getElementById(email.replace("@","2").replace(/\./g,"")) as HTMLElement).innerText)}>Copy</button>
+                  <button onClick={_=>window.navigator.clipboard.writeText((document.getElementById(email.replace("@","2").replace(/\./g,"")) as HTMLElement).innerText)}>Copy</button>
                 </div>
               );
             })}

@@ -162,7 +162,7 @@ const Onboard: React.FC<Props> = (props: Props) => {
                   <input
                     type="radio"
                     checked={profile.award_id == id}
-                    onChange={(e) => {
+                    onChange={() => {
                       setMyAwardId(id);
                       setIsUpdate(true);
                     }}
@@ -182,7 +182,7 @@ const Onboard: React.FC<Props> = (props: Props) => {
                   type="radio"
                   id={"no_award"}
                   checked={profile.award_id == null}
-                  onChange={(e) => {
+                  onChange={() => {
                     setMyAwardId(undefined);
                     setIsUpdate(true);
                   }}
