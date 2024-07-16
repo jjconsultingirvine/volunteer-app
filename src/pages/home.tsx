@@ -73,20 +73,20 @@ const Home: React.FC<Props> = (props: Props) => {
           </div>
           <div className="home_buttons">
             <div className="horizontal">
-              <Link to="/search">
+              <Link to="/volunteer-app/search">
                 <button>Search</button>
               </Link>
               {props.user && (
-                <Link to={"/profile/" + props.user?.random_id}>
+                <Link to={"/volunteer-app/profile/" + props.user?.random_id}>
                   <button>My Profile</button>
                 </Link>
               )}
             </div>
             {props.user && props.user.award_id != undefined && 
-            <Link to="/congressional_award">
+            <Link to="/volunteer-app/congressional_award">
               <button>Congressional Award</button>
             </Link>}
-            <Link to="/log/custom">
+            <Link to="/volunteer-app/log/custom">
               <button className="external_log">
                 Log with external organization
               </button>

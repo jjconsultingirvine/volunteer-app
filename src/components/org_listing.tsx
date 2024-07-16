@@ -27,13 +27,13 @@ const OrgListing: React.FC<Props> = (props: Props) => {
             {props.saved ? "Unsave" : "Save"}
           </button>
           {props.saved && (
-            <Link to={"/log/" + props.org.url_name}>
+            <Link to={"/volunteer-app/log/" + props.org.url_name}>
               <button className="log_hours_btn">Log Hours</button>
             </Link>
           )}
         </div>
 
-        <Link to={"/org/" + props.org.url_name}>
+        <Link to={"/volunteer-app/org/" + props.org.url_name}>
           <button className="explore_button">
             {props.saved ? "View" : "Explore"}
           </button>

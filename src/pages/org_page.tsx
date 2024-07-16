@@ -30,7 +30,7 @@ const OrgPage: React.FC<Props> = (props: Props) => {
           </div>
           <div className="org_interest">
             Organization Interest:{" "}
-            <Link to={"/search/?query=" + encodeURIComponent(org.interest)}>
+            <Link to={"/volunteer-app/search/?query=" + encodeURIComponent(org.interest)}>
               {org.interest}
             </Link>
           </div>
@@ -99,7 +99,7 @@ const OrgPage: React.FC<Props> = (props: Props) => {
             )}
           </div>
           <div className="org_log_hours">
-            <Link to={"/log/" + org.url_name}>
+            <Link to={"/volunteer-app/log/" + org.url_name}>
               <button>Log Hours</button>
             </Link>
           </div>
