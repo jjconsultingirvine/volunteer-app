@@ -56,7 +56,7 @@ const Profile: React.FC<Props> = (props: Props) => {
                   {data.description || "User on {app name}"}
                 </div>
               </div>
-              {is_me ? <Link to="/onboard">Edit profile</Link> : ""}
+              {is_me ? <Link to="/volunteer-app/onboard">Edit profile</Link> : ""}
               <div className="profile_summary">
                 <div>
                   <strong>Interests:</strong> {data.interests.join(", ")}
@@ -82,7 +82,7 @@ const Profile: React.FC<Props> = (props: Props) => {
                     matches.length == 0 ? (
                       <>{exp.org_name}</>
                     ) : (
-                      <Link to={"/org/" + matches[0].url_name}>
+                      <Link to={"/volunteer-app/org/" + matches[0].url_name}>
                         {exp.org_name}
                       </Link>
                     );

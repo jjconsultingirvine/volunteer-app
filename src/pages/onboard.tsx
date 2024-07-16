@@ -191,7 +191,7 @@ const Onboard: React.FC<Props> = (props: Props) => {
               </div>
             </div>
           </div>
-          <Link to="/">
+          <Link to="/volunteer-app">
             <button>Start Exploring!</button>
           </Link>
         </div>
