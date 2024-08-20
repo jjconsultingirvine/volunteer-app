@@ -36,7 +36,7 @@ const Home: React.FC<Props> = (props: Props) => {
       saved_list.push(org);
     else if (
       props.user &&
-      org.roles
+      (org.roles
         .map(
           (role) =>
             role.skills.every((skill) => props.user!.skills.includes(skill)) &&
@@ -44,7 +44,7 @@ const Home: React.FC<Props> = (props: Props) => {
               role.interest ? role.interest : org.interest
             )
         )
-        .some((n: boolean) => n)
+        .some((n: boolean) => n) || (org.roles.length == 0 && props.user!.interests.includes(org.interest)))
     )
       recommended_list.push(org);
     else unsaved_list.push(org);
@@ -59,7 +59,7 @@ const Home: React.FC<Props> = (props: Props) => {
 
   return (
     <>
-      <TopNavBar is_home user={props.user} title="Volunteer App"></TopNavBar>
+      <TopNavBar is_home user={props.user} title="Service Hour"></TopNavBar>
       <div className="page" id="home">
         <div className="horizontal-wrap panel">
           <div className="profile_info">

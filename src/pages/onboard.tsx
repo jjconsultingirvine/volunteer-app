@@ -192,7 +192,7 @@ const Onboard: React.FC<Props> = (props: Props) => {
             </div>
           </div>
           <Link to="/volunteer-app">
-            <button>Start Exploring!</button>
+            <button style={{marginTop: "1rem"}}>Start Exploring!</button>
           </Link>
         </div>
       </div>

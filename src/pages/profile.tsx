@@ -56,7 +56,11 @@ const Profile: React.FC<Props> = (props: Props) => {
                   {data.description || "User on {app name}"}
                 </div>
               </div>
-              {is_me ? <Link to="/volunteer-app/onboard">Edit profile</Link> : ""}
+              {is_me ? (
+                <Link to="/volunteer-app/onboard">Edit profile</Link>
+              ) : (
+                ""
+              )}
               <div className="profile_summary">
                 <div>
                   <strong>Interests:</strong> {data.interests.join(", ")}
@@ -91,19 +95,21 @@ const Profile: React.FC<Props> = (props: Props) => {
                     <div className="experience" key={(exp as any).id}>
                       {is_me && (
                         <ThreeDots
-                          style={{ width: "1rem", height: "1rem" }}
+                          size="1rem"
+                          style={{ float: "right" }}
                           actions={[
                             [
                               "Toggle in totals",
                               () => {
                                 let new_experiences = experiences.slice();
-                                let old = experiences[id].count_towards_award;
+                                let old = exp.count_towards_award;
                                 new_experiences[id].count_towards_award = !old;
+                                setExperiences(new_experiences);
                                 props.supabase
                                   .from("experiences")
                                   .update({ count_towards_award: !old })
-                                  .eq("id", (experiences[id] as any).id)
-                                  .then((val) => console.log(val));
+                                  .eq("id", (exp as any).id)
+                                  .then(console.log);
                               },
                             ],
                             [
@@ -112,8 +118,13 @@ const Profile: React.FC<Props> = (props: Props) => {
                                 props.supabase
                                   .from("experiences")
                                   .delete()
-                                  .eq("id", (experiences[id] as any).id)
+                                  .eq("id", (exp as any).id)
+                                  .single()
                                   .then(console.log);
+                                let new_experiences = experiences.slice();
+                                new_experiences.splice(id, 1);
+                                console.log(new_experiences.length);
+                                setExperiences(new_experiences);
                               },
                             ],
                           ]}
@@ -121,9 +132,8 @@ const Profile: React.FC<Props> = (props: Props) => {
                       )}
                       <div className="experience_org_name">{org_link}</div>
                       <div className="experience_role">{exp.role}</div>
-                      <div className="exp_date">On {date}</div>
-                      <div className="exp_dur">
-                        For {hours_text(exp.duration)}
+                      <div className="exp_date">
+                        {date}: {hours_text(exp.duration)}
                       </div>
                       {!exp.count_towards_award && (
                         <div className="cong_award_count">

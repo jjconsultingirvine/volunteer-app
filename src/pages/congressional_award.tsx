@@ -198,63 +198,82 @@ const CongressionalAward: React.FC<Props> = (props: Props) => {
             );
           })}
         </div>
-        <div className="emails panel">
-          <h2>Emails to send</h2>
-          <div className="email_list">
-            {my_contacts.map((email) => {
-              if (!props.experiences.some((exp) => exp.contact == email)) {
+        {my_contacts.length != 0 && (
+          <div className="emails panel">
+            <h2>Emails to send</h2>
+            <div className="email_list">
+              {my_contacts.map((email) => {
+                if (!props.experiences.some((exp) => exp.contact == email)) {
+                  return (
+                    <p key={email}>
+                      To: <a href={"mailto:" + email}>{email}</a>
+                      <br />
+                      {email} has no hours to verify.
+                    </p>
+                  );
+                }
                 return (
-                  <p key={email}>
-                    To: <a href={"mailto:" + email}>{email}</a>
-                    <br />
-                    {email} has no hours to verify.
-                  </p>
+                  <div key={email} className="email_template">
+                    <p>
+                      To: <a href={"mailto:" + email}>{email}</a>
+                    </p>
+                    <p>Subject: Congressional Award Volunteer Verification</p>
+                    <div
+                      className="template_text"
+                      id={email.replace("@", "2").replace(/\./g, "")}
+                    >
+                      <p>Hello!</p>
+                      <p>
+                        I am doing a project called the Congressional Award that
+                        is given to students who complete life building
+                        activities like volunteering and self improvement. As a
+                        part of that, I need my volunteer coordinators to verify
+                        my service hours. It is as easy as just clicking a
+                        button to verify the hours!{" "}
+                        <b>
+                          If you are willing to click this button for me, send a
+                          confirmation message so I can put you as my reference
+                          :)
+                        </b>
+                      </p>
+                      <p>
+                        If you want more details, here are the specific events I
+                        need you to verify, but the email will just contain a
+                        table of how many hours in each month.
+                      </p>
+                      <div className="email_experiences">
+                        {props.experiences
+                          .filter((exp) => exp.contact == email)
+                          .sort((a, b) => (a.time < b.time ? -1 : 1))
+                          .map((exp) => {
+                            return (
+                              <div key={(exp as any).id}>
+                                {get_exp_date(exp)}: {exp.org_name} - {exp.role}{" "}
+                                for <b>{get_exp_duration_pretty(exp)}</b>
+                              </div>
+                            );
+                          })}
+                      </div>
+                    </div>
+                    <button
+                      onClick={(_) =>
+                        window.navigator.clipboard.writeText(
+                          (
+                            document.getElementById(
+                              email.replace("@", "2").replace(/\./g, "")
+                            ) as HTMLElement
+                          ).innerText
+                        )
+                      }
+                    >
+                      Copy
+                    </button>
+                  </div>
                 );
-              }
-              return (
-                <div key={email} className="email_template">
-                  <p>
-                    To: <a href={"mailto:" + email}>{email}</a>
-                  </p>
-                  <p>Subject: Congressional Award Volunteer Verification</p>
-                  <div className="template_text" id={email.replace("@","2").replace(/\./g,"")}>
-                  <p>Hello!</p>
-                  <p>
-                    I am doing a project called the Congressional Award that is
-                    given to students who complete life building activities like
-                    volunteering and self improvement. As a part of that, I need
-                    my volunteer coordinators to verify my service hours. It is
-                    as easy as just clicking a button to verify the hours!{" "}
-                    <b>
-                      If you are willing to click this button for me, send a
-                      confirmation message so I can put you as my reference :)
-                    </b>
-                  </p>
-                  <p>
-                    If you want more details, here are the specific events I
-                    need you to verify, but the email will just contain a table
-                    of how many hours in each month.
-                  </p>
-                  <div className="email_experiences">
-                    {props.experiences
-                      .filter((exp) => exp.contact == email)
-                      .sort((a, b) => (a.time < b.time ? -1 : 1))
-                      .map((exp) => {
-                        return (
-                          <div key={(exp as any).id}>
-                            {get_exp_date(exp)}: {exp.org_name} - {exp.role} for{" "}
-                            <b>{get_exp_duration_pretty(exp)}</b>
-                          </div>
-                        );
-                      })}
-                  </div>
-                  </div>
-                  <button onClick={_=>window.navigator.clipboard.writeText((document.getElementById(email.replace("@","2").replace(/\./g,"")) as HTMLElement).innerText)}>Copy</button>
-                </div>
-              );
-            })}
+              })}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );

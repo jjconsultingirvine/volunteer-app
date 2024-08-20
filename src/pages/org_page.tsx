@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import { useParams } from "react-router";
 import "../style/org_page.css";
 import { useSession } from "@clerk/clerk-react";
@@ -15,6 +15,7 @@ interface Props {
 }
 
 const OrgPage: React.FC<Props> = (props: Props) => {
+  useLayoutEffect(()=>window.scrollTo(0,0),[]);
   const clerk_session = useSession().session;
   console.log(clerk_session);
   const org_id = useParams().org_id;
