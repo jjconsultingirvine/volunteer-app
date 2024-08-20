@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useLayoutEffect } from "react";
 import { useParams } from "react-router";
 import "../style/org_page.css";
 import { useSession } from "@clerk/clerk-react";
