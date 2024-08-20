@@ -13,10 +13,11 @@
 .org_pfp {
     width: 5rem;
     height: 5rem;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 35%;   
     padding: 0.2rem;
     outline: 0.15rem solid #aaa;
+    background: white
 }
 .org_name {
     font-size: 1.5rem;
